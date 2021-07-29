@@ -3,9 +3,7 @@
 
 # Movementvania
 
----
-
-#### So have you ever heard of Super Metroid? Well, our idea is to create a game in a similar style, but with one catch. You can’t shoot anyone.
+### So have you ever heard of Super Metroid? Well, our idea is to create a game in a similar style, but with one catch. You can’t shoot anyone.
 
 Combat has been a crutch of game design pretty much since its inception. Try and think of a game that doesn't feature combat in some way. You probably don't have a lot of examples, right? So, we've challenged ourselves to see whether or not you can make a compelling experience without weapons. If you’ve played a game like Super Metroid, Hollow Knight, or Axiom Verge (known as a Metroidvania), we plan to create a game in a similar style, where you explore through a world, and you unlock new power ups that allow you to progress to different areas of the game, except all of those power ups are about movement, rather than combat.
 
