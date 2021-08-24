@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
     Rigidbody2D rb;
-    [SerializeField] private float movementSpeed = 8;
-    [SerializeField] private float jumpPower = 10;
+    private float movementSpeed = 12;
+    private float jumpPower = 25;
+    private float maxFallSpeed = 20;
 
     // Start is called before the first frame update
     void Start() {
@@ -24,9 +25,9 @@ public class PlayerMovement : MonoBehaviour {
 
         // Needs grounding later
         if(Input.GetKeyDown(KeyCode.Space)) {
-            verticalV += jumpPower;
+            verticalV = jumpPower;
         }
 
-        rb.velocity = new Vector3(horizontalV, verticalV, 0);
+        rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
     }
 }
