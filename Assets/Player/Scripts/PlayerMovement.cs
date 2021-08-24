@@ -6,8 +6,9 @@ public class PlayerMovement : MonoBehaviour {
 
     Rigidbody2D rb;
     private float movementSpeed = 12;
-    private float jumpPower = 25;
+    private float jumpPower = 20;
     private float maxFallSpeed = 20;
+    private bool grounded;
 
     // Start is called before the first frame update
     void Start() {
@@ -24,10 +25,20 @@ public class PlayerMovement : MonoBehaviour {
         float verticalV = rb.velocity.y;
 
         // Needs grounding later
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space) && grounded) {
             verticalV = jumpPower;
         }
 
+        Debug.Log(grounded);
+
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
+        grounded = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        grounded = false;
     }
 }
