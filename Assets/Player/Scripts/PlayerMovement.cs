@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
     private float jumpPower = 20;
     private float maxFallSpeed = 20;
     private bool grounded;
+    private bool usedDoubleJump;
 
     // Start is called before the first frame update
     void Start() {
@@ -25,8 +26,9 @@ public class PlayerMovement : MonoBehaviour {
         float verticalV = rb.velocity.y;
 
         // Needs grounding later
-        if(Input.GetKeyDown(KeyCode.Space) && grounded) {
+        if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
             verticalV = jumpPower;
+            if (!grounded && !usedDoubleJump) { usedDoubleJump = true; }
         }
 
         Debug.Log(grounded);
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D other) {
         grounded = true;
+        usedDoubleJump = false;
     }
 
     private void OnTriggerExit2D(Collider2D other) {
