@@ -1206,10 +1206,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1185528665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49a0cc6ba62a7d346baa1e4caa32a83e, type: 3}
+  m_Script: {fileID: 11500000, guid: 68ce69345aa16c24e87bccb5252c013a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movmentSpeed: 10
+  movmentSpeed: 6
+  jumpPower: 10
+  dashForce: 10
+  startDashTime: 0.5
 --- !u!61 &1185528667
 BoxCollider2D:
   m_ObjectHideFlags: 0
