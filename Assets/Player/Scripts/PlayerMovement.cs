@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     Rigidbody2D rb;
-    [SerializeField] private float movmentSpeed = 6;
+    [SerializeField] private float movementSpeed = 8;
     [SerializeField] private float jumpPower = 10;
 
     public float dashForce = 10f;
@@ -15,19 +15,19 @@ public class PlayerMovement : MonoBehaviour
     private float dashDirection;
     private bool isDashing;
 
-    // Start is called before the first frame update
-    void Start(){
+    void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update(){
-        //horizontal and vertical movements
-        float horizontalV = Input.GetAxis("Horizontal") * movmentSpeed;
+        float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
+                                  // Digital input doesn't have any smoothing, so this lerp smooths out  
+                                  // the horizontal acceleration based on the target velocity
+        float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
         float verticalV = rb.velocity.y;
 
-        //basic movements if/else loop (incl double jumps and ground checks)
-        if (Input.GetKeyDown(KeyCode.Space)){
+        // Needs grounding later
+        if(Input.GetKeyDown(KeyCode.Space)) {
             verticalV += jumpPower;
         }
 
@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        //code for dashing
+        
+        rb.velocity = new Vector3(horizontalV, verticalV, 0);
     }
 }
