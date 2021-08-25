@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (isDashing)
             {
-                rb.velocity = transform.right * dashDirection * dashForce;
+                horizontalV = dashDirection * dashForce;
                 currentDashTime -= Time.deltaTime;
 
                 if (currentDashTime <= 0)
