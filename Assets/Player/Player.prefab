@@ -168,6 +168,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5632959480811406953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49a0cc6ba62a7d346baa1e4caa32a83e, type: 3}
+  m_Script: {fileID: 11500000, guid: 68ce69345aa16c24e87bccb5252c013a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashForce: 10
+  startDashTime: 0.5
