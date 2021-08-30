@@ -18,8 +18,12 @@ public class PlayerMovement : MonoBehaviour
     private float dashDirection;
     private bool isDashing;
 
+    public InputController inputController;
+
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        inputController = GetComponent<InputController>();
     }
     void Update() {
         float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
@@ -28,13 +32,13 @@ public class PlayerMovement : MonoBehaviour
         float verticalV = rb.velocity.y;
 
         // Jump Handling
-        if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
+        if(inputController.isJumpActive() && (grounded || !usedDoubleJump)) {
             verticalV = jumpPower;
             if (!grounded && !usedDoubleJump) { usedDoubleJump = true; }
         }
         
         //code for dashing
-        if (Input.GetKeyDown(KeyCode.Z) && horizontalV != 0){
+        if (inputController.isDashActive() && horizontalV != 0){
             isDashing = true;
             currentDashTime = startDashTime;
             rb.velocity = Vector2.zero;
