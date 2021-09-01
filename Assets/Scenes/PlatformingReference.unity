@@ -232,68 +232,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &78222814 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3478502153219584107, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-  m_PrefabInstance: {fileID: 294066304}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &294066304
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -161.7951
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -8.4469795
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -104.295166
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088745, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478502153589088750, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
-      propertyPath: m_Name
-      value: LongRoom
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 400dd0cab46311e40ab49ff2deefc02d, type: 3}
 --- !u!1 &371401559
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,9 +1305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1478035161}
-  startingBounds: {fileID: 0}
-  TranslateX: 0
-  TranslateY: 0
+  startingBounds: {fileID: 1856777178}
 --- !u!1 &1113184267
 GameObject:
   m_ObjectHideFlags: 0
@@ -2549,6 +2485,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777952863}
   m_CullTransparentMesh: 1
+--- !u!1 &1856777178 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3981565928260004042, guid: f593b42a333a43648948ec5be95e6590, type: 3}
+  m_PrefabInstance: {fileID: 3981565927879623440}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1867519033
 GameObject:
   m_ObjectHideFlags: 0
@@ -3082,7 +3023,7 @@ Transform:
   m_LocalScale: {x: 2, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1973944085
 MonoBehaviour:
@@ -3098,7 +3039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1098896934}
   player: {fileID: 1478035161}
-  newCameraBounds: {fileID: 78222814}
+  newCameraBounds: {fileID: 0}
   doorSide: 0
 --- !u!61 &1973944086
 BoxCollider2D:
@@ -3321,6 +3262,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3476363252869420164, guid: f593b42a333a43648948ec5be95e6590, type: 3}
+      propertyPath: translateY
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3981565927467315555, guid: f593b42a333a43648948ec5be95e6590, type: 3}
       propertyPath: m_Name
       value: Left Wall
@@ -3351,7 +3296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3981565928224696846, guid: f593b42a333a43648948ec5be95e6590, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -134.7
+      value: -163.1
       objectReference: {fileID: 0}
     - target: {fileID: 3981565928224696846, guid: f593b42a333a43648948ec5be95e6590, type: 3}
       propertyPath: m_LocalPosition.y
