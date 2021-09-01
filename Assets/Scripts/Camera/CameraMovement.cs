@@ -41,9 +41,6 @@ public class CameraMovement : MonoBehaviour {
         this.maxX = maxX;
         this.maxY = maxY;
 
-        Debug.Log(minX);
-        Debug.Log(maxX);
-
         // Set the smoothing to be reset after .3 seconds
         StartCoroutine(EndTransition(smoothing, .3f));
     }
