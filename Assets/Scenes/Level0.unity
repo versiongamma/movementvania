@@ -496,6 +496,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 90624665}
+  cameraSmootingAmount: 0.2
+  roomTransitionSmoothingAmount: 0.8
+  TranslateX: 1
+  TranslateY: 1
 --- !u!1 &611483844
 GameObject:
   m_ObjectHideFlags: 0
