@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraBoundsHandler : MonoBehaviour {
 
     private CameraMovement cameraMovement;
+    [SerializeField] private bool translateX, translateY;
 
     public void SetCameraBounds(Camera camera) {
         cameraMovement = camera.GetComponent<CameraMovement>();
@@ -21,5 +22,6 @@ public class CameraBoundsHandler : MonoBehaviour {
         maxY = col.bounds.center.y + col.bounds.extents.y - camera.orthographicSize;
 
         cameraMovement.Transition(minX, minY, maxX, maxY);
+        cameraMovement.SetTranslation(translateX, translateY);
     }
 }

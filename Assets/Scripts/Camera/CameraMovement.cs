@@ -6,23 +6,22 @@ public class CameraMovement : MonoBehaviour {
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject startingBounds;
-    private float cameraSmootingAmount = 0.4f;
-    private float roomTransitionSmoothingAmount = 28f;
-
-    protected float minX = float.MinValue;
-    protected float maxX = float.MaxValue;
-    protected float minY = float.MinValue;
-    protected float maxY = float.MaxValue;
-
-    private float newX, newY;
+    private float cameraSmootingAmount = 0.4f, roomTransitionSmoothingAmount = 28f, newX, newY;
+    private bool translateX, translateY;
+    protected float minX = float.MinValue, maxX = float.MaxValue, minY = float.MinValue, maxY = float.MaxValue;
 
     void Start() {
         startingBounds.GetComponent<CameraBoundsHandler>().SetCameraBounds(this.GetComponent<Camera>());
     }
     
     void FixedUpdate() {
-        newX = Mathf.Clamp(player.transform.position.x, minX, maxX); 
-        newY = Mathf.Clamp(player.transform.position.y + 6, minY, maxY); 
+        if (translateX) { newX = player.transform.position.x; }
+        if (translateY) { newY = player.transform.position.y + 6; }
+
+        // Terniaries make sure that the max clamp is greater than the min clamp, otherwise it freaks out.
+        // This should only happen in single screen rooms
+        newX = Mathf.Clamp(newX, minX, maxX > minX ? maxX : minX);
+        newY = Mathf.Clamp(newY, minY, maxY > minY ? maxY : minY);
 
 
                                                                                              // Invert camera smoothing so higher 
@@ -42,12 +41,20 @@ public class CameraMovement : MonoBehaviour {
         this.maxX = maxX;
         this.maxY = maxY;
 
+        Debug.Log(minX);
+        Debug.Log(maxX);
+
         // Set the smoothing to be reset after .3 seconds
-        StartCoroutine(ResetSmoothing(smoothing, .3f));
+        StartCoroutine(EndTransition(smoothing, .3f));
+    }
+
+    public void SetTranslation(bool x, bool y) {
+        translateX = x;
+        translateY = y;
     }
 
     // Resets the camera smoothing back to the default after a specified amount of time
-    private IEnumerator ResetSmoothing(float smoothing, float delta) {
+    private IEnumerator EndTransition(float smoothing, float delta) {
         yield return new WaitForSeconds(delta);
         cameraSmootingAmount = smoothing;
     }

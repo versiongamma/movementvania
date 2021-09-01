@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoorHandler : MonoBehaviour {
     private enum Side { Left, Right };
 
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject newCameraBounds;
     [SerializeField] private Side doorSide;
@@ -19,8 +19,8 @@ public class DoorHandler : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        float playerTranslateX = doorSide == Side.Left ? -3 : doorSide == Side.Right ? 3 : 0;
+        float playerTranslateX = doorSide == Side.Left ? -5 : doorSide == Side.Right ? 5 : 0;
         player.transform.position += new Vector3(playerTranslateX, 0, 0);
-        boundsHandler.SetCameraBounds(camera);
+        boundsHandler.SetCameraBounds(mainCamera);
     }
 }
