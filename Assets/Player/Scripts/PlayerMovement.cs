@@ -21,6 +21,18 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
     void Update() {
+        // Grounding
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 1, LayerMask.GetMask("Geometry"));
+        Debug.DrawRay(transform.position, -Vector2.up, Color.red);
+
+        if (hit.collider != null) {
+            grounded = true;
+            usedDoubleJump = false;
+        } else {
+            grounded = false;
+        }
+
+
         float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
         // Digital input doesn't have any smoothing, so this lerp smooths out the horizontal acceleration based on the target velocity
         float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
@@ -51,15 +63,5 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
-    }
-
-    // Grounding Triggers
-    private void OnTriggerStay2D(Collider2D other) {
-        grounded = true;
-        usedDoubleJump = false;
-    }
-
-    private void OnTriggerExit2D(Collider2D other) {
-        grounded = false;        
     }
 }
