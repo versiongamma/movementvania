@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     private bool usedDoubleJump;
 
     public float dashForce = 10f;
-    public float startDashTime = 0.5f;
     private float currentDashTime;
     private float dashDirection;
     private bool isDashing;
@@ -48,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
         //code for dashing
         if (Input.GetKeyDown(KeyCode.Z) && horizontalV != 0){
             isDashing = true;
-            currentDashTime = startDashTime;
             rb.velocity = Vector2.zero;
             dashDirection = (int)horizontalV;
 
