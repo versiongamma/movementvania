@@ -5,19 +5,21 @@ using UnityEngine.UI;
 
 public class FullscreenToggleController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public Toggle fullscreenToggle;
-    public void updateFullscreen()
+
+    public Toggle fullScreenToggle;
+    public void Awake()
     {
-        if (fullscreenToggle.enabled)
+        if (Screen.fullScreen == true)
         {
-            Screen.fullScreen = true;
-        }
+            fullScreenToggle.isOn = true;
+        } 
         else
         {
-            Screen.fullScreen = false;
+            fullScreenToggle.isOn = false;
         }
-
-        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen);
+    }
+    public void setFullscreen(bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
     }
 }

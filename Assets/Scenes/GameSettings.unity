@@ -1549,6 +1549,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1344093944}
     m_Modifications:
+    - target: {fileID: 9057328835510044852, guid: 305c3023290545440834bcf3248eadc0, type: 3}
+      propertyPath: brightnessProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 00166905d379a95448926ec926b9a12a, type: 2}
     - target: {fileID: 9057328835510044858, guid: 305c3023290545440834bcf3248eadc0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2190,7 +2194,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1485442136}
+        m_TargetAssemblyTypeName: ResolutionDropdownController, Assembly-CSharp
+        m_MethodName: setRes
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1485442138
 MonoBehaviour:
@@ -2562,6 +2578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1806491858}
   - component: {fileID: 1806491859}
+  - component: {fileID: 1806491860}
   m_Layer: 5
   m_Name: Fullscreen
   m_TagString: Untagged
@@ -2636,8 +2653,33 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1806491860}
+        m_TargetAssemblyTypeName: FullscreenToggleController, Assembly-CSharp
+        m_MethodName: setFullscreen
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
+--- !u!114 &1806491860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806491857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f5ca21fcb9ce64db3ba1dcd525968f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullScreenToggle: {fileID: 1806491859}
 --- !u!1 &1837234086
 GameObject:
   m_ObjectHideFlags: 0
