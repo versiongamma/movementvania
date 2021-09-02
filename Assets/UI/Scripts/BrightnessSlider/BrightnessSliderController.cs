@@ -15,7 +15,6 @@ public class BrightnessSliderController : MonoBehaviour
     {
         brightnessSlider = GetComponent<Slider>();
         
-        
         GameObject gameObject = GameObject.Find("BrightnessPPV");
         volume = gameObject.GetComponent<PostProcessVolume>();
         volume.sharedProfile.TryGetSettings(out colorGrading);
