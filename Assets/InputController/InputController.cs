@@ -8,6 +8,9 @@ public class InputController : MonoBehaviour
     public bool controllerActive = false;
     // shouldUpdateKeyBindings : Boolean for whether or not the keybindings have been updated in the settings menu
     public static bool shouldUpdateKeyBindings = false;
+    public static float smoothingValue = 0;
+    public static int smoothingValueMax = 1;
+    public static int smoothingValueMin = -1;
 
     // Key bindings
     // ADD IN CONTROLLER PRESETS AS WELL
@@ -27,20 +30,19 @@ public class InputController : MonoBehaviour
             /*
             left = ;
             right = ;
+            */
             map = (KeyCode) PlayerPrefs.GetInt("mapKeyController", (int)KeyCode.JoystickButton3);
             inventory = (KeyCode) PlayerPrefs.GetInt("mapKeyController", (int)KeyCode.JoystickButton2);
-             */
+             
         }
         else
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKey", (int)KeyCode.Space);
             dash = (KeyCode) PlayerPrefs.GetInt("dashKey", (int)KeyCode.Z);
-            /*
-            left = ;
-            right = ;
+            left = (KeyCode) PlayerPrefs.GetInt("leftKey", (int)KeyCode.A);
+            right = (KeyCode) PlayerPrefs.GetInt("rightKey", (int)KeyCode.D);
             map = (KeyCode) PlayerPrefs.GetInt("mapKey", (int)KeyCode.M);
             inventory = (KeyCode) PlayerPrefs.GetInt("inventory", (int)KeyCode.I);
-             */
         }
     }
 
@@ -101,39 +103,69 @@ public class InputController : MonoBehaviour
         return Input.GetKeyDown(inventory);
     }
 
-    public float getHorizontalAxis() 
+    public float getHorizontalAxis()
     {
-        return Input.GetAxis("Horizontal");
+        if (isControllerActive())
+            return Input.GetAxis("Horizontal");
+        float ret = 0;
+        if (Input.GetKey(left))
+        {
+            ret += -1f;
+        }
+        if (Input.GetKey(right))
+        {
+            ret += 1f;
+        };
+        return ret;
+        /*
+        float dead = 0.001f;
+        float sensitivity = 3f;
+        if (Input.GetKey(left))
+        {
+            float target = (Input.GetKey(left)) ? -1f : 0f;
+            smoothingValue = Mathf.MoveTowards(smoothingValue, target, sensitivity * Time.deltaTime);
+        }
+        if (Input.GetKey(right))
+        {
+            float target = (Input.GetKey(right)) ? 1f : 0f;
+            smoothingValue = Mathf.MoveTowards(smoothingValue, target, sensitivity * Time.deltaTime);
+        };
+        
+        if (!(Input.GetKey(left) || Input.GetKey(right))) {
+            if (smoothingValue < 0)
+                smoothingValue += 0.05f;
+            if (smoothingValue > 0)
+                smoothingValue += -0.05f;
+        }
+        
+        if (smoothingValue >= smoothingValueMax)
+            smoothingValue = smoothingValueMax;
+        if (smoothingValue <= smoothingValueMin)
+            smoothingValue = smoothingValueMin;
+        //Debug.Log(smoothingValue);
+        smoothingValue = (Mathf.Abs(smoothingValue) < dead) ? 0f : smoothingValue;
+        return smoothingValue;
+        */
     }
 
-    public bool controllerButtonPressed() 
+    public bool controllerButtonPressed()
     {
-        // This code is extremely messy, will optimize later
-        if (Input.GetKeyDown(KeyCode.JoystickButton0) ||
-            Input.GetKeyDown(KeyCode.JoystickButton1) ||
-            Input.GetKeyDown(KeyCode.JoystickButton2) ||
-            Input.GetKeyDown(KeyCode.JoystickButton3) ||
-            Input.GetKeyDown(KeyCode.JoystickButton4) ||
-            Input.GetKeyDown(KeyCode.JoystickButton5) ||
-            Input.GetKeyDown(KeyCode.JoystickButton6) ||
-            Input.GetKeyDown(KeyCode.JoystickButton7) ||
-            Input.GetKeyDown(KeyCode.JoystickButton8) ||
-            Input.GetKeyDown(KeyCode.JoystickButton9) ||
-            Input.GetKeyDown(KeyCode.JoystickButton10) ||
-            Input.GetKeyDown(KeyCode.JoystickButton11) ||
-            Input.GetKeyDown(KeyCode.JoystickButton12) ||
-            Input.GetKeyDown(KeyCode.JoystickButton13) ||
-            Input.GetKeyDown(KeyCode.JoystickButton14) ||
-            Input.GetKeyDown(KeyCode.JoystickButton15) ||
-            Input.GetKeyDown(KeyCode.JoystickButton16) ||
-            Input.GetKeyDown(KeyCode.JoystickButton17) ||
-            Input.GetKeyDown(KeyCode.JoystickButton18) ||
-            Input.GetKeyDown(KeyCode.JoystickButton19))
+        for (int i = 330; i < 350; i++)
+        {
+            if (Input.GetKey((KeyCode)i))
+                return true;
+        }
+        if (Input.GetAxis("Horizontal") > 0.6f || Input.GetAxis("Horizontal") < -0.6f)
         {
             return true;
         }
         else 
         {
+            if (isControllerActive())
+            {
+                updateControllerActive(false);
+                return true;
+            }
             return false;
         }
     }

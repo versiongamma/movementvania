@@ -37,7 +37,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
+        float targetHorizontalV = inputController.getHorizontalAxis() * movementSpeed;
+        Debug.Log(targetHorizontalV);
         // Digital input doesn't have any smoothing, so this lerp smooths out the horizontal acceleration based on the target velocity
         float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
         float verticalV = rb.velocity.y;
