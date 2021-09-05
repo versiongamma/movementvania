@@ -6,12 +6,43 @@ public class InputController : MonoBehaviour
 {
     // controllerActive : Boolean for whether a controller is being used or not
     public bool controllerActive = false;
+    // shouldUpdateKeyBindings : Boolean for whether or not the keybindings have been updated in the settings menu
+    public static bool shouldUpdateKeyBindings = false;
 
     // Key bindings
-    // EVENTUALLY CHANGE THIS TO READ FROM USER SETTINGS WITH PRESET DEFAULTS
     // ADD IN CONTROLLER PRESETS AS WELL
-    KeyCode jump = KeyCode.Space;
-    KeyCode dash = KeyCode.Z;
+    public static KeyCode jump;
+    public static KeyCode dash;
+    public static KeyCode left;
+    public static KeyCode right;
+    public static KeyCode map;
+    public static KeyCode inventory;
+
+    public void updateKeyBindingsFromFile()
+    {
+        if (isControllerActive())
+        {
+            jump = (KeyCode) PlayerPrefs.GetInt("jumpKeyController", (int)KeyCode.JoystickButton0);
+            dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton1);
+            /*
+            left = ;
+            right = ;
+            map = (KeyCode) PlayerPrefs.GetInt("mapKeyController", (int)KeyCode.JoystickButton3);
+            inventory = (KeyCode) PlayerPrefs.GetInt("mapKeyController", (int)KeyCode.JoystickButton2);
+             */
+        }
+        else
+        {
+            jump = (KeyCode) PlayerPrefs.GetInt("jumpKey", (int)KeyCode.Space);
+            dash = (KeyCode) PlayerPrefs.GetInt("dashKey", (int)KeyCode.Z);
+            /*
+            left = ;
+            right = ;
+            map = (KeyCode) PlayerPrefs.GetInt("mapKey", (int)KeyCode.M);
+            inventory = (KeyCode) PlayerPrefs.GetInt("inventory", (int)KeyCode.I);
+             */
+        }
+    }
 
     public void updateJumpBind(KeyCode b) 
     {
@@ -20,6 +51,25 @@ public class InputController : MonoBehaviour
     public void updateDashBind(KeyCode b) 
     {
         dash = b;
+    }
+    public void updateLeftBind(KeyCode b) {
+        left = b;
+    }
+    public void updateRightBind(KeyCode b)
+    {
+        right = b;
+    }
+    public void updateMapBind(KeyCode b)
+    {
+        map = b;
+    }
+    public void updateInventoryBind(KeyCode b)
+    {
+        inventory = b;
+    }
+    public void setShouldUpdateKeyBindings(bool b) 
+    {
+        shouldUpdateKeyBindings = b;
     }
 
     public bool isControllerActive() 
@@ -40,6 +90,15 @@ public class InputController : MonoBehaviour
     public bool isDashActive()
     {
         return Input.GetKeyDown(dash);
+    }
+    public bool isMapActive()
+    {
+        return Input.GetKeyDown(map);
+    }
+
+    public bool isInventoryActive()
+    {
+        return Input.GetKeyDown(inventory);
     }
 
     public float getHorizontalAxis() 
@@ -71,46 +130,39 @@ public class InputController : MonoBehaviour
             Input.GetKeyDown(KeyCode.JoystickButton18) ||
             Input.GetKeyDown(KeyCode.JoystickButton19))
         {
-
             return true;
         }
         else 
         {
-            if (Input.GetKeyDown(KeyCode.W) ||
-                Input.GetKeyDown(KeyCode.A) ||
-                Input.GetKeyDown(KeyCode.S) ||
-                Input.GetKeyDown(KeyCode.D) ||
-                Input.GetKeyDown(KeyCode.Space) ||
-                Input.GetKeyDown(KeyCode.Z))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return false;
         }
     }
 
     void Start()
     {
-        Debug.Log("Started");
+        Debug.Log("Getting user-set keybinds from disk...");
+        updateKeyBindingsFromFile();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (shouldUpdateKeyBindings) 
+        {
+            Debug.Log("Updating keybinds....");
+            updateKeyBindingsFromFile();
+            setShouldUpdateKeyBindings(false);
+        }
+        
         if (controllerButtonPressed())
         {
             updateControllerActive(true);
-            updateJumpBind(KeyCode.JoystickButton0);
-            updateDashBind(KeyCode.JoystickButton1);
+            updateKeyBindingsFromFile();
         }
         else 
         {
             updateControllerActive(false);
-            updateJumpBind(KeyCode.Space);
-            updateDashBind(KeyCode.Z);
+            updateKeyBindingsFromFile();
         }
     }
 }
