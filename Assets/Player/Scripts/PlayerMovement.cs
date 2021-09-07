@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    Rigidbody2D rb;
+    private Rigidbody2D rb;
+    private PlayerEquipment equip;
     private float movementSpeed = 12;
     private float jumpPower = 20;
     private float maxFallSpeed = 20;
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        equip = GetComponent<PlayerEquipment>();
     }
     void Update() {
         // Grounding
@@ -35,17 +37,17 @@ public class PlayerMovement : MonoBehaviour
 
         float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
         // Digital input doesn't have any smoothing, so this lerp smooths out the horizontal acceleration based on the target velocity
-        float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
+        float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.4f);
         float verticalV = rb.velocity.y;
 
         // Jump Handling
-        if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
+        if(Input.GetKeyDown(KeyCode.Space) && (grounded || (!usedDoubleJump && equip.GetPowerupState(PowerUps.DoubleJump)))) {
             verticalV = jumpPower;
             if (!grounded && !usedDoubleJump) { usedDoubleJump = true; }
         }
         
         //code for dashing
-        if (Input.GetKeyDown(KeyCode.Z) && horizontalV != 0){
+        if (Input.GetKeyDown(KeyCode.Z) && horizontalV != 0 && equip.GetPowerupState(PowerUps.Dash)){
             isDashing = true;
             rb.velocity = Vector2.zero;
             dashDirection = (int)horizontalV;
