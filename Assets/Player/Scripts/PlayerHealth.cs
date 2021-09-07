@@ -26,4 +26,12 @@ public class PlayerHealth : MonoBehaviour
 
         healthBar.SetHealth(currentHealth);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.name == "Enemy")
+        {
+            TakeDamage(1);
+        }
+    }
 }
