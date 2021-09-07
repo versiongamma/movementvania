@@ -7,7 +7,6 @@ public class EnemyMovements : MonoBehaviour
     public float direction = 1.5f;
     public float speed = 2f;
     private Vector2 startPosition;
-    HealthBar health;
 
     private void Start(){
         startPosition = transform.position;
