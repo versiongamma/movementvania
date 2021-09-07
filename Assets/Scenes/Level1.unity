@@ -910,7 +910,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 4
   m_WholeNumbers: 0
-  m_Value: 0.48
+  m_Value: 4
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1241,7 +1241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2946453748824675032, guid: 2a4440b81cbe90543986c8bdaad11d13, type: 3}
       propertyPath: m_Name
-      value: SquareTEST
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5626431560858070450, guid: 2a4440b81cbe90543986c8bdaad11d13, type: 3}
       propertyPath: m_RootOrder
@@ -1425,6 +1425,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6620412703635892069, guid: e57087c0f063d0445a9a91fc1507e234, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 458571709}
     - target: {fileID: 6620412703635892069, guid: e57087c0f063d0445a9a91fc1507e234, type: 3}
       propertyPath: currentHealth
       value: 0
@@ -1756,7 +1760,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816732675}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &816732677
 Camera:
   m_ObjectHideFlags: 0
@@ -1869,7 +1873,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817618737}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &817618740
 Camera:
   m_ObjectHideFlags: 0
