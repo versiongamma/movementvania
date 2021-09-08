@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        
+ 
     }
 
     void TakeDamage(int damage)
@@ -31,7 +31,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if(collision.collider.name == "Enemy")
         {
-            TakeDamage(1);
+            TakeDamage(5);
         }
     }
 }
