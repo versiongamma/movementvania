@@ -17,12 +17,15 @@ public class PlayerMovement : MonoBehaviour
     private float dashDirection;
     private bool isDashing;
 
+    //Sound effect handling
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
+    private System.Random randInt;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        randInt = new System.Random();
     }
     void Update() {
         // Grounding
@@ -45,12 +48,21 @@ public class PlayerMovement : MonoBehaviour
         // Handle footstep sound
         if (grounded == true && (Input.GetAxis("Horizontal") > 0 || Input.GetAxis ("Horizontal") < 0))
         {
-            if (!footstepSound.isPlaying)
+            // Change footstep pitch for variety
+            switch(randInt.Next(3))
             {
-                footstepSound.Play();
+                case (0):
+                    footstepSound.pitch = 0.6f;
+                    break;
+                case (1):
+                    footstepSound.pitch = 0.8f;
+                    break;
+                case (2):
+                    footstepSound.pitch = 0.7f;
+                    break;
             }
+            if (!footstepSound.isPlaying) { footstepSound.Play(); }
         }
-
         if (Input.GetAxis("Horizontal") == 0) { footstepSound.Stop(); }
 
         // Jump Handling
