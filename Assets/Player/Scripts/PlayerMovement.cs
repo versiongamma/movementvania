@@ -42,6 +42,17 @@ public class PlayerMovement : MonoBehaviour
         float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
         float verticalV = rb.velocity.y;
 
+        // Handle footstep sound
+        if (grounded == true && (Input.GetAxis("Horizontal") > 0 || Input.GetAxis ("Horizontal") < 0))
+        {
+            if (!footstepSound.isPlaying)
+            {
+                footstepSound.Play();
+            }
+        }
+
+        if (Input.GetAxis("Horizontal") == 0) { footstepSound.Stop(); }
+
         // Jump Handling
         if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
             verticalV = jumpPower;
@@ -59,6 +70,8 @@ public class PlayerMovement : MonoBehaviour
             isDashing = true;
             rb.velocity = Vector2.zero;
             dashDirection = (int)horizontalV;
+
+            dashSound.Play();
 
             if (isDashing)
             {
