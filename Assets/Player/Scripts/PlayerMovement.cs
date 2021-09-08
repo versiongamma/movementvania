@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         equip = GetComponent<PlayerEquipment>();
+        inputController = GetComponent<InputController>();
+        randInt = new System.Random();
     }
     void Update() {
         // Grounding
@@ -175,8 +177,8 @@ public class PlayerMovement : MonoBehaviour {
             rb.gravityScale = 0;
             if (colliding) { break; }
 
-            velocity = (AwfulVectorCircleLerp(startPos, point, x) - nextPoint).normalized;
-            nextPoint = AwfulVectorCircleLerp(startPos, point, x);
+            velocity = (CustomMath.CircleVectorLerp(startPos, point, x) - nextPoint).normalized;
+            nextPoint = CustomMath.CircleVectorLerp(startPos, point, x);
             Debug.DrawRay(transform.position, velocity.normalized * 20, Color.black);
             transform.position = nextPoint;
 
@@ -191,10 +193,6 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = velocity.normalized * 20 + new Vector2(0, 5);
         rb.gravityScale = 4.7f;
         yield break;
-    }
-
-    Vector2 AwfulVectorCircleLerp(Vector2 position, Vector2 target, float x) {
-        return new Vector2(x, target.y - Mathf.Sqrt((target.y*target.y) - (2 * position.y * target.y) + (position.x * position.x) + (position.y * position.y) + (2 * x * target.x) - (2 * position.x * target.x) - x * x));
     }
 
     void OnCollisionEnter2D(Collision2D col) { colliding = true; }
