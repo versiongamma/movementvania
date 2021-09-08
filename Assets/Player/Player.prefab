@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 5632959480811406955}
   - component: {fileID: 1749235540926942299}
   - component: {fileID: 6620412703635892069}
-  - component: {fileID: 1240578628139565223}
+  - component: {fileID: 5901053173419083911}
+  - component: {fileID: 1262552953951933213}
   - component: {fileID: 1366415741919943802}
   m_Layer: 0
   m_Name: Player
@@ -148,10 +149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashForce: 10
-  inputController: {fileID: 1240578628139565223}
   jumpSound: {fileID: 0}
   dashSound: {fileID: 0}
   footstepSound: {fileID: 0}
+  inputController: {fileID: 1262552953951933213}
 --- !u!114 &6620412703635892069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +168,21 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthBar: {fileID: 0}
---- !u!114 &1240578628139565223
+--- !u!114 &5901053173419083911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632959480811406953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa69c836d2d441044ad12caea8e3a4c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doubleJump: 1
+  dash: 1
+--- !u!114 &1262552953951933213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
