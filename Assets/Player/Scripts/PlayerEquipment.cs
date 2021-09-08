@@ -8,7 +8,14 @@ public enum PowerUps {
 public class PlayerEquipment : MonoBehaviour {
     // Start is called before the first frame update
 
-    private bool[] powerups = new bool[2];
+    [Header("Starting PowerUps")]
+    [SerializeField] private bool doubleJump;
+    [SerializeField] private bool dash;
+    private bool[] powerups;
+
+    void Start() {
+        powerups = new bool[]{doubleJump, dash};
+    }
 
     public bool GetPowerupState(PowerUps index) { return powerups[(int)index]; }
 

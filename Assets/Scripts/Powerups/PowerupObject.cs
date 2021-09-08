@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerupObject : MonoBehaviour {
-    // Start is called before the first frame update
 
     [SerializeField] private string powerupName, message; 
     [SerializeField] private PowerUps powerup; 
