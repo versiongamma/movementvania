@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
 
     Rigidbody2D rb;
     private float movementSpeed = 12;
@@ -18,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing;
     public InputController inputController;
 
-     [SerializeField] private AudioSource jumpSound;
+    //Sound effect handling
+    [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
      private System.Random randInt;
@@ -26,13 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
-        inputController = GetComponent<InputController>();
-        //Sound effect handling
-       
 
-    void Start() {
-        rb = GetComponent<Rigidbody2D>();
-        randInt = new System.Random();
     }
     void Update() {
         // Grounding
