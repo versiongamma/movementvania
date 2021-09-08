@@ -16,12 +16,19 @@ public class PlayerMovement : MonoBehaviour
     private float currentDashTime;
     private float dashDirection;
     private bool isDashing;
+    public InputController inputController;
 
-    //Sound effect handling
-    [SerializeField] private AudioSource jumpSound;
+     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
-    private System.Random randInt;
+     private System.Random randInt;
+
+
+    void Start() {
+        rb = GetComponent<Rigidbody2D>();
+        inputController = GetComponent<InputController>();
+        //Sound effect handling
+       
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -40,7 +47,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
+        float targetHorizontalV = inputController.getHorizontalAxis() * movementSpeed;
+        Debug.Log(targetHorizontalV);
         // Digital input doesn't have any smoothing, so this lerp smooths out the horizontal acceleration based on the target velocity
         float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
         float verticalV = rb.velocity.y;
@@ -66,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetAxis("Horizontal") == 0) { footstepSound.Stop(); }
 
         // Jump Handling
-        if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
+        if(inputController.isJumpActive() && (grounded || !usedDoubleJump)) {
             verticalV = jumpPower;
             jumpSound.pitch = 1f;
             jumpSound.Play();
@@ -78,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
         //code for dashing
-        if (Input.GetKeyDown(KeyCode.Z) && horizontalV != 0){
+        if (inputController.isDashActive() && horizontalV != 0){
             isDashing = true;
             rb.velocity = Vector2.zero;
             dashDirection = (int)horizontalV;
