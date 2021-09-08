@@ -26,7 +26,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
-
+        inputController = GetComponent<InputController>();
+        randInt = new System.Random();
     }
     void Update() {
         // Grounding
