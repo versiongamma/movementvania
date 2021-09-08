@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private float dashDirection;
     private bool isDashing;
 
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource footstepSound;
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -41,7 +45,13 @@ public class PlayerMovement : MonoBehaviour
         // Jump Handling
         if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
             verticalV = jumpPower;
-            if (!grounded && !usedDoubleJump) { usedDoubleJump = true; }
+            jumpSound.pitch = 1f;
+            jumpSound.Play();
+            if (!grounded && !usedDoubleJump)
+            {
+                usedDoubleJump = true;
+                jumpSound.pitch = 1.3f;
+            }
         }
         
         //code for dashing
