@@ -17,8 +17,15 @@ public class PlayerMovement : MonoBehaviour
     private float dashDirection;
     private bool isDashing;
 
+    //Sound effect handling
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource footstepSound;
+    private System.Random randInt;
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        randInt = new System.Random();
     }
     void Update() {
         // Grounding
@@ -38,10 +45,36 @@ public class PlayerMovement : MonoBehaviour
         float horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 0.05f : 0.2f);
         float verticalV = rb.velocity.y;
 
+        // Handle footstep sound
+        if (grounded == true && (Input.GetAxis("Horizontal") > 0 || Input.GetAxis ("Horizontal") < 0))
+        {
+            // Change footstep pitch for variety
+            switch(randInt.Next(3))
+            {
+                case (0):
+                    footstepSound.pitch = 0.6f;
+                    break;
+                case (1):
+                    footstepSound.pitch = 0.8f;
+                    break;
+                case (2):
+                    footstepSound.pitch = 0.7f;
+                    break;
+            }
+            if (!footstepSound.isPlaying) { footstepSound.Play(); }
+        }
+        if (Input.GetAxis("Horizontal") == 0) { footstepSound.Stop(); }
+
         // Jump Handling
         if(Input.GetKeyDown(KeyCode.Space) && (grounded || !usedDoubleJump)) {
             verticalV = jumpPower;
-            if (!grounded && !usedDoubleJump) { usedDoubleJump = true; }
+            jumpSound.pitch = 1f;
+            jumpSound.Play();
+            if (!grounded && !usedDoubleJump)
+            {
+                usedDoubleJump = true;
+                jumpSound.pitch = 1.3f;
+            }
         }
         
         //code for dashing
@@ -49,6 +82,8 @@ public class PlayerMovement : MonoBehaviour
             isDashing = true;
             rb.velocity = Vector2.zero;
             dashDirection = (int)horizontalV;
+
+            dashSound.Play();
 
             if (isDashing)
             {
