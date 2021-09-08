@@ -26,6 +26,15 @@ public class PlayerMovement : MonoBehaviour {
     private bool isDashing;
     private bool colliding;
 
+    //Sound effect handling
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource footstepSound;
+     private System.Random randInt;
+
+
+     public InputController inputController;
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         equip = GetComponent<PlayerEquipment>();
@@ -48,29 +57,57 @@ public class PlayerMovement : MonoBehaviour {
         float horizontalV = rb.velocity.x;
         float verticalV = rb.velocity.y;
 
-        float targetHorizontalV = Input.GetAxis("Horizontal") * movementSpeed;
+        float targetHorizontalV = inputController.getHorizontalAxis() * movementSpeed;
         
         if (!airLauncing) {
             // Digital input doesn't have any smoothing, so this lerp smooths out the horizontal acceleration based on the target velocity
             horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 15f * Time.deltaTime : 30f * Time.deltaTime);
         } else {
             horizontalV = Mathf.Lerp(horizontalV, 0, Time.deltaTime);
-            if (Input.GetAxis("Horizontal") != 0) airLauncing = false;
+            if (inputController.getHorizontalAxis() != 0) airLauncing = false;
         }
 
+        // Handle footstep sound
+        if (grounded == true && (inputController.getHorizontalAxis() > 0 || inputController.getHorizontalAxis() < 0))
+        {
+            // Change footstep pitch for variety
+            switch(randInt.Next(3))
+            {
+                case (0):
+                    footstepSound.pitch = 0.6f;
+                    break;
+                case (1):
+                    footstepSound.pitch = 0.8f;
+                    break;
+                case (2):
+                    footstepSound.pitch = 0.7f;
+                    break;
+            }
+            if (!footstepSound.isPlaying) { footstepSound.Play(); }
+        }
+        if (inputController.getHorizontalAxis()== 0) { footstepSound.Stop(); }
+
         // Jump Handling
-        if(Input.GetKeyDown(KeyCode.Space) && (grounded || (!usedDoubleJump && equip.GetPowerupState(PowerUps.DoubleJump)))) {
+        if(inputController.isJumpActive() && (grounded || (!usedDoubleJump && equip.GetPowerupState(PowerUps.DoubleJump)))) {
             verticalV = jumpPower;
-            if (!grounded && !usedDoubleJump) { usedDoubleJump = true; }
+            jumpSound.pitch = 1f;
+            jumpSound.Play();
+            if (!grounded && !usedDoubleJump)
+            {
+                usedDoubleJump = true;
+                jumpSound.pitch = 1.3f;
+            }
         }
 
         if (horizontalV != 0) movementNormal = Mathf.Clamp(horizontalV, -1, 1);
         
         //code for dashing
-        if (Input.GetKeyDown(KeyCode.Z) && horizontalV != 0 && equip.GetPowerupState(PowerUps.Dash)){
+        if (inputController.isDashActive() && horizontalV != 0 && equip.GetPowerupState(PowerUps.Dash)){
             isDashing = true;
             rb.velocity = Vector2.zero;
             dashDirection = (int)horizontalV;
+
+            dashSound.Play();
 
             if (isDashing)
             {
@@ -91,7 +128,7 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, Vector2.right * .6f, Color.blue);
         if (onWallLeft.collider != null || onWallRight.collider != null) {
 
-            if (verticalV <= 0 && Mathf.Abs(Input.GetAxis("Horizontal")) > 0) {
+            if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
 
                 if (Input.GetKeyDown(KeyCode.Space)) {
