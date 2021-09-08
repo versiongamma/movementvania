@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapFull : MonoBehaviour
 {
     [SerializeField] public GameObject mapFullUI;
-    [SerializeField] private bool viewMap;
+    [SerializeField] public bool viewMap;
 
     // Update is called once per frame
     private void Update()
@@ -25,13 +25,19 @@ public class MapFull : MonoBehaviour
         }
     }
 
-    void MapView()
+    public void MapView()
     {
         mapFullUI.SetActive(true);
     }
 
-    void MapHide()
+    public void MapHide()
     {
         mapFullUI.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void updateViewMap()
+    {
+        viewMap = !viewMap;
     }
 }
