@@ -19,7 +19,7 @@ public class DoorHandler : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        player.GetComponent<PlayerMovement>().EndSwing();
+        player.GetComponent<PlayerMovement>().EndMovement();
         float playerTranslateX = doorSide == Side.Left ? -5 : doorSide == Side.Right ? 5 : 0;
         player.transform.position += new Vector3(playerTranslateX, 0, 0);
         boundsHandler.SetCameraBounds(mainCamera);

@@ -7,24 +7,24 @@ public class PlayerMovement : MonoBehaviour {
     // Attached Components
     private Rigidbody2D rb;
     private PlayerEquipment equip;
+    [SerializeField] private CameraMovement cam;
 
     // Movement variables
     private float movementSpeed = 12;
     private float movementNormal = 0;
     private float jumpPower = 20;
     private float maxFallSpeed = 20;
-    public float dashForce = 10f;
-    private float currentDashTime;
-    private float dashDirection;
+    private float dashForce = 10f;
     private Vector2 swingDirection = new Vector2(.5f, .5f);
+    private Vector2 dashDirection = new Vector2(1f, 0f);
 
     // States
     private bool grounded;
     private bool usedDoubleJump;
+    private bool usedDash;
     private bool airLauncing;
     private bool keepAirLauncing;
     private bool swinging;
-    private bool isDashing;
     private bool colliding;
 
     //Sound effect handling
@@ -43,6 +43,11 @@ public class PlayerMovement : MonoBehaviour {
         randInt = new System.Random();
     }
     void Update() {
+
+        dashDirection = new Vector2(inputController.getHorizontalAxis(), inputController.getVerticalAxis());
+        dashDirection.x = Mathf.Round(dashDirection.x/.5f) * .5f;
+        dashDirection.y = Mathf.Round(dashDirection.y/.5f) * .5f;
+
         // Grounding
         RaycastHit2D groundHitPos = Physics2D.Raycast(transform.position + new Vector3(.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
         RaycastHit2D groundHitNeg = Physics2D.Raycast(transform.position + new Vector3(-.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
@@ -52,6 +57,7 @@ public class PlayerMovement : MonoBehaviour {
         if (groundHitPos.collider != null || groundHitNeg.collider != null) {
             grounded = true;
             usedDoubleJump = false;
+            usedDash = false;
             airLauncing = false;
         } else {
             grounded = false;
@@ -104,24 +110,10 @@ public class PlayerMovement : MonoBehaviour {
 
         if (horizontalV != 0) movementNormal = Mathf.Clamp(horizontalV, -1, 1);
         
-        //code for dashing
-        if (inputController.isDashActive() && horizontalV != 0 && equip.GetPowerupState(PowerUps.Dash)){
-            isDashing = true;
-            rb.velocity = Vector2.zero;
-            dashDirection = (int)horizontalV;
-
+        //Dash
+        if (inputController.isDashActive() && !usedDash && dashDirection != Vector2.zero && !grounded && equip.GetPowerupState(PowerUps.Dash)){
+            StartCoroutine(Dash(dashDirection));
             dashSound.Play();
-
-            if (isDashing)
-            {
-                horizontalV = dashDirection * dashForce;
-                currentDashTime -= Time.deltaTime;
-
-                if (currentDashTime <= 0)
-                {
-                    isDashing = false;
-                }
-            }
         }
 
         // Wall Slide and Jump
@@ -131,7 +123,7 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, Vector2.right * .6f, Color.blue);
         if (onWallLeft.collider != null || onWallRight.collider != null) {
 
-            if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0) {
+            if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0 && equip.GetPowerupState(PowerUps.WallJump)) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
 
                 if (inputController.isJumpActive()) {
@@ -148,8 +140,7 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
-        if (hit.collider != null && inputController.isSwingDown() && !grounded) {
-            
+        if (hit.collider != null && inputController.isSwingDown() && !grounded && equip.GetPowerupState(PowerUps.Swing)) { 
             StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
         }
 
@@ -157,8 +148,27 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
     }
 
-    public void EndSwing() {
-        colliding = true;
+    IEnumerator Dash(Vector2 direction) {
+        float t = Time.deltaTime;
+        Vector2 startPos = transform.position;
+        cam.DashSmoothing();
+
+        while ((Vector2)transform.position != Vector2.Lerp(startPos, startPos + (direction * 7), 1)) {
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+            
+            Vector2 nextPosition = Vector2.Lerp(startPos, startPos + (direction * 7), t * 20);
+            RaycastHit2D collide = Physics2D.Raycast(transform.position, direction, Vector2.Distance(transform.position, nextPosition), LayerMask.GetMask("Geometry"));
+            if (collide.collider != null || colliding) { break; }
+            transform.position = nextPosition;
+
+            t += Time.deltaTime;
+            yield return 0;
+        }
+        
+        usedDash = true;
+        rb.gravityScale = 4.7f;
+        yield break;
     }
 
     IEnumerator KeepAirLaunch(float time) {
@@ -185,8 +195,6 @@ public class PlayerMovement : MonoBehaviour {
         float x = startPos.x;
         Vector2 nextPoint = transform.position, velocity = new Vector2();
 
-        Debug.Log("Swinging");
-
         while (inputController.isSwingActive() && (direction ? (x < startPos.x + distance) : (x > startPos.x - distance))) {
             rb.velocity = Vector3.zero;
             rb.gravityScale = 0;
@@ -208,6 +216,10 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = velocity.normalized * 20 + new Vector2(0, 5);
         rb.gravityScale = 4.7f;
         yield break;
+    }
+
+     public void EndMovement() {
+        colliding = true;
     }
 
     void OnCollisionEnter2D(Collision2D col) { colliding = true; }
