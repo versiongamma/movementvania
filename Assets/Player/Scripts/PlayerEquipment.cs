@@ -11,10 +11,12 @@ public class PlayerEquipment : MonoBehaviour {
     [Header("Starting PowerUps")]
     [SerializeField] private bool doubleJump;
     [SerializeField] private bool dash;
+    [SerializeField] private bool wallJump;
+    [SerializeField] private bool swing;
     private bool[] powerups;
 
     void Start() {
-        powerups = new bool[]{doubleJump, dash};
+        powerups = new bool[]{doubleJump, dash, wallJump, swing};
     }
 
     public bool GetPowerupState(PowerUps index) { return powerups[(int)index]; }
