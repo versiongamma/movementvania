@@ -157,6 +157,10 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
     }
 
+    public void EndSwing() {
+        colliding = true;
+    }
+
     IEnumerator KeepAirLaunch(float time) {
         keepAirLauncing = true;
         yield return new WaitForSeconds(time);
