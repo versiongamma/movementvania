@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour {
             if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
 
-                if (Input.GetKeyDown(KeyCode.Space)) {
+                if (inputController.isJumpActive()) {
                     verticalV = jumpPower;
                 }
             }
@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
-        if (hit.collider != null && Input.GetKeyDown(KeyCode.LeftShift) && !grounded) {
+        if (hit.collider != null && inputController.isSwingDown() && !grounded) {
             
             StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
         }
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour {
 
         Debug.Log("Swinging");
 
-        while (!Input.GetKeyUp(KeyCode.LeftShift) && (direction ? (x < startPos.x + distance) : (x > startPos.x - distance))) {
+        while (inputController.isSwingActive() && (direction ? (x < startPos.x + distance) : (x > startPos.x - distance))) {
             rb.velocity = Vector3.zero;
             rb.gravityScale = 0;
             if (colliding) { break; }

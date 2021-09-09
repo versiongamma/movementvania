@@ -16,6 +16,7 @@ public class InputController : MonoBehaviour
     // ADD IN CONTROLLER PRESETS AS WELL
     public static KeyCode jump;
     public static KeyCode dash;
+    public static KeyCode swing;
     public static KeyCode left;
     public static KeyCode right;
     public static KeyCode map;
@@ -27,6 +28,7 @@ public class InputController : MonoBehaviour
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKeyController", (int)KeyCode.JoystickButton0);
             dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton1);
+            swing = (KeyCode) PlayerPrefs.GetInt("swingKeyController", (int)KeyCode.JoystickButton4);
             /*
             left = ;
             right = ;
@@ -39,6 +41,7 @@ public class InputController : MonoBehaviour
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKey", (int)KeyCode.Space);
             dash = (KeyCode) PlayerPrefs.GetInt("dashKey", (int)KeyCode.Z);
+            swing = (KeyCode) PlayerPrefs.GetInt("swingKey", (int)KeyCode.LeftShift);
             left = (KeyCode) PlayerPrefs.GetInt("leftKey", (int)KeyCode.A);
             right = (KeyCode) PlayerPrefs.GetInt("rightKey", (int)KeyCode.D);
             map = (KeyCode) PlayerPrefs.GetInt("mapKey", (int)KeyCode.M);
@@ -92,6 +95,14 @@ public class InputController : MonoBehaviour
     public bool isDashActive()
     {
         return Input.GetKeyDown(dash);
+    }
+    public bool isSwingActive()
+    {
+        return Input.GetKey(swing);
+    }
+    public bool isSwingDown()
+    {
+        return Input.GetKeyDown(swing);
     }
     public bool isMapActive()
     {
