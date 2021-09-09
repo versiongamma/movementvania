@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour {
     private bool grounded;
     private bool usedDoubleJump;
     private bool airLauncing;
+    private bool keepAirLauncing;
     private bool swinging;
     private bool isDashing;
     private bool colliding;
@@ -66,7 +67,7 @@ public class PlayerMovement : MonoBehaviour {
             horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 15f * Time.deltaTime : 30f * Time.deltaTime);
         } else {
             horizontalV = Mathf.Lerp(horizontalV, 0, Time.deltaTime);
-            if (inputController.getHorizontalAxis() != 0) airLauncing = false;
+            if (inputController.getHorizontalAxis() != 0 && !keepAirLauncing) airLauncing = false;
         }
 
         // Handle footstep sound
@@ -135,6 +136,9 @@ public class PlayerMovement : MonoBehaviour {
 
                 if (inputController.isJumpActive()) {
                     verticalV = jumpPower;
+                    horizontalV = -inputController.getHorizontalAxis() * 15;
+                    airLauncing = true;
+                    StartCoroutine(KeepAirLaunch(.1f));
                 }
             }
         }
@@ -151,6 +155,13 @@ public class PlayerMovement : MonoBehaviour {
 
 
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
+    }
+
+    IEnumerator KeepAirLaunch(float time) {
+        keepAirLauncing = true;
+        yield return new WaitForSeconds(time);
+        keepAirLauncing = false;
+        airLauncing = false;
     }
 
     IEnumerator StartSwing(Vector2 point, bool direction) {

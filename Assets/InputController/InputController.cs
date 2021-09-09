@@ -27,7 +27,7 @@ public class InputController : MonoBehaviour
         if (isControllerActive())
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKeyController", (int)KeyCode.JoystickButton0);
-            dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton1);
+            dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton5);
             swing = (KeyCode) PlayerPrefs.GetInt("swingKeyController", (int)KeyCode.JoystickButton4);
             /*
             left = ;
