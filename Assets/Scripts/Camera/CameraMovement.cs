@@ -8,7 +8,7 @@ public class CameraMovement : MonoBehaviour {
     [SerializeField] private GameObject startingBounds;
     private float cameraSmootingAmount = 0.4f, roomTransitionSmoothingAmount = 28f, newX, newY;
     private bool translateX, translateY;
-    protected float minX = float.MinValue, maxX = float.MaxValue, minY = float.MinValue, maxY = float.MaxValue;
+    private float minX = float.MinValue, maxX = float.MaxValue, minY = float.MinValue, maxY = float.MaxValue;
 
     void Start() {
         startingBounds.GetComponent<CameraBoundsHandler>().SetCameraBounds(this.GetComponent<Camera>());
@@ -54,5 +54,19 @@ public class CameraMovement : MonoBehaviour {
     private IEnumerator EndTransition(float smoothing, float delta) {
         yield return new WaitForSeconds(delta);
         cameraSmootingAmount = smoothing;
+    }
+
+    public void setCameraMinMax(float minx, float maxx, float miny, float maxy) 
+    {
+        Transition(minx, miny, maxx, maxy);
+    }
+
+    public float[] getCameraMinMax()
+    {
+        return new float[] { this.minX, this.maxX, this.minY, this.maxY };
+    }
+
+    public GameObject getStartingBounds() {
+        return this.startingBounds;
     }
 }

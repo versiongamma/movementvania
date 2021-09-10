@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    void GamePaused(){
+    public void GamePaused(){
         Time.timeScale = 0;
         pauseMenuUI.SetActive(true);
     }
@@ -31,4 +31,9 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
         pauseMenuUI.SetActive(false);
     }
+
+    public void setPaused(bool p) {
+        this.gameIsPaused = p;
+    }
+
 }

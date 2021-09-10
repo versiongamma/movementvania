@@ -20,6 +20,11 @@ public class PlayerHealth : MonoBehaviour
  
     }
 
+    public int getPlayerHealth() 
+    {
+        return this.currentHealth;
+    }
+
     void TakeDamage(int damage)
     {
         currentHealth -= damage;

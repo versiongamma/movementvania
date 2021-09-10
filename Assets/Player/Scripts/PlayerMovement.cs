@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -151,6 +153,28 @@ public class PlayerMovement : MonoBehaviour {
 
 
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
+
+        if (SaveLoad.loaded)
+        {
+            Debug.Log("Moving player to loaded position!");
+            if (String.Compare(SceneManager.GetActiveScene().name, SaveLoad.activeSceneName) != 0)
+                SceneManager.LoadScene(SaveLoad.activeSceneName, LoadSceneMode.Single);
+
+            Physics2D.SyncTransforms();
+            rb.position = new Vector2(SaveLoad.position[0], SaveLoad.position[1]);
+            rb.transform.position = new Vector2(SaveLoad.position[0], SaveLoad.position[1]);
+
+            Camera.main.transform.position = new Vector3(SaveLoad.cameraPosition[0], SaveLoad.cameraPosition[1], SaveLoad.cameraPosition[2]);
+
+            GameObject.Find("Main Camera").GetComponent<CameraMovement>().setCameraMinMax(SaveLoad.cameraMinMax[0], SaveLoad.cameraMinMax[1], SaveLoad.cameraMinMax[2], SaveLoad.cameraMinMax[3]);
+     
+            SaveLoad.startingBounds.GetComponent<CameraBoundsHandler>().SetCameraBounds(Camera.main);
+
+            equip.setPowerUps(SaveLoad.powerups);
+
+            SaveLoad.clear();
+            SaveLoad.loaded = false;
+        }
     }
 
     IEnumerator StartSwing(Vector2 point, bool direction) {
@@ -198,4 +222,13 @@ public class PlayerMovement : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D col) { colliding = true; }
 
     void OnCollisionExit2D(Collision2D col) { colliding = false; }
+
+    public Vector2 getPlayerPosition() 
+    {
+        return this.rb.position;
+    }
+    public PlayerEquipment getPlayerEquipment() 
+    {
+        return this.equip;
+    }
 }
