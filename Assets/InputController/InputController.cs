@@ -46,8 +46,8 @@ public class InputController : MonoBehaviour
             swing = (KeyCode) PlayerPrefs.GetInt("swingKey", (int)KeyCode.LeftShift);
             left = (KeyCode) PlayerPrefs.GetInt("leftKey", (int)KeyCode.A);
             right = (KeyCode) PlayerPrefs.GetInt("rightKey", (int)KeyCode.D);
-            up = (KeyCode) PlayerPrefs.GetInt("leftKey", (int)KeyCode.W);
-            down = (KeyCode) PlayerPrefs.GetInt("rightKey", (int)KeyCode.S);
+            up = (KeyCode) PlayerPrefs.GetInt("upKey", (int)KeyCode.W);
+            down = (KeyCode) PlayerPrefs.GetInt("downKey", (int)KeyCode.S);
             map = (KeyCode) PlayerPrefs.GetInt("mapKey", (int)KeyCode.M);
             inventory = (KeyCode) PlayerPrefs.GetInt("inventory", (int)KeyCode.I);
         }
@@ -168,11 +168,11 @@ public class InputController : MonoBehaviour
         if (isControllerActive())
             return Input.GetAxis("Vertical");
         float ret = 0;
-        if (Input.GetKey(up))
+        if (Input.GetKey(down))
         {
             ret += -1f;
         }
-        if (Input.GetKey(down))
+        if (Input.GetKey(up))
         {
             ret += 1f;
         };

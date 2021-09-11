@@ -8,7 +8,13 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb;
     private PlayerEquipment equip;
     [SerializeField] private CameraMovement cam;
+
+    [Header("Dash Attachments")]
+    [SerializeField] private ParticleSystem dashParticles;
+
+    [Header("Hook Attachments")]
     [SerializeField] private HookRenderer hookRenderer;
+    [SerializeField] private HookIndicatorRenderer hookIndicatorRenderer;
 
     // Movement variables
     private float movementSpeed = 12;
@@ -28,13 +34,14 @@ public class PlayerMovement : MonoBehaviour {
     private bool swinging;
     private bool colliding;
 
+    [Header("Sound Effects")]
     //Sound effect handling
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
      private System.Random randInt;
 
-
+    [Header("Input")]
      public InputController inputController;
 
     void Start() {
@@ -107,11 +114,17 @@ public class PlayerMovement : MonoBehaviour {
         if (horizontalV != 0) movementNormal = Mathf.Clamp(horizontalV, -1, 1);
 
         dashDirection = new Vector2(inputController.getHorizontalAxis(), inputController.getVerticalAxis());
-        dashDirection.x = Mathf.Round(dashDirection.x/.5f) * .5f;
-        dashDirection.y = Mathf.Round(dashDirection.y/.5f) * .5f;
+
+        Debug.Log(dashDirection);
         
         //Dash
-        if (inputController.isDashActive() && !usedDash && dashDirection != Vector2.zero && !grounded && equip.GetPowerupState(PowerUps.Dash)){
+        if (
+            inputController.isDashActive() && 
+            !usedDash && 
+            !swinging &&
+            dashDirection != Vector2.zero && 
+            equip.GetPowerupState(PowerUps.Dash)
+        ) {
             StartCoroutine(Dash(dashDirection));
             dashSound.Play();
         }
@@ -122,6 +135,8 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, -Vector2.right * .6f, Color.blue);
         Debug.DrawRay(transform.position, Vector2.right * .6f, Color.blue);
         if (onWallLeft.collider != null || onWallRight.collider != null) {
+
+
 
             if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0 && equip.GetPowerupState(PowerUps.WallJump)) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
@@ -140,9 +155,12 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
-        if (hit.collider != null && inputController.isSwingDown() && !grounded && equip.GetPowerupState(PowerUps.Swing)) { 
-            StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
-        }
+        if (hit.collider != null && !grounded) {
+            hookIndicatorRenderer.Display(hit.point);
+            if (inputController.isSwingDown()  && equip.GetPowerupState(PowerUps.Swing)) { 
+                StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
+            }
+        } else hookIndicatorRenderer.Remove();
 
 
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
@@ -151,9 +169,10 @@ public class PlayerMovement : MonoBehaviour {
     IEnumerator Dash(Vector2 direction) {
         float t = Time.deltaTime;
         Vector2 startPos = transform.position;
+        dashParticles.Play();
         cam.DashSmoothing();
 
-        while ((Vector2)transform.position != Vector2.Lerp(startPos, startPos + (direction * 7), 1)) {
+        while (t < .1f) {
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
             
@@ -168,6 +187,7 @@ public class PlayerMovement : MonoBehaviour {
         
         usedDash = true;
         rb.gravityScale = 4.7f;
+        dashParticles.Stop();
         yield break;
     }
 
@@ -200,6 +220,7 @@ public class PlayerMovement : MonoBehaviour {
         while (inputController.isSwingActive() && (direction ? (x < startPos.x + distance) : (x > startPos.x - distance))) {
             rb.velocity = Vector3.zero;
             rb.gravityScale = 0;
+            hookIndicatorRenderer.Remove();
             if (colliding) { break; }
 
             velocity = (CustomMath.CircleVectorLerp(startPos, point, x) - nextPoint).normalized;
@@ -216,6 +237,7 @@ public class PlayerMovement : MonoBehaviour {
         
         airLauncing = true;
         swinging = false;
+        usedDash = false;
         rb.velocity = velocity.normalized * 20 + new Vector2(0, 5);
         rb.gravityScale = 4.7f;
         hookRenderer.Dettach();
