@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb;
     private PlayerEquipment equip;
     [SerializeField] private CameraMovement cam;
+    [SerializeField] private HookRenderer hookRenderer;
 
     // Movement variables
     private float movementSpeed = 12;
@@ -43,11 +44,6 @@ public class PlayerMovement : MonoBehaviour {
         randInt = new System.Random();
     }
     void Update() {
-
-        dashDirection = new Vector2(inputController.getHorizontalAxis(), inputController.getVerticalAxis());
-        dashDirection.x = Mathf.Round(dashDirection.x/.5f) * .5f;
-        dashDirection.y = Mathf.Round(dashDirection.y/.5f) * .5f;
-
         // Grounding
         RaycastHit2D groundHitPos = Physics2D.Raycast(transform.position + new Vector3(.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
         RaycastHit2D groundHitNeg = Physics2D.Raycast(transform.position + new Vector3(-.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
@@ -109,6 +105,10 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if (horizontalV != 0) movementNormal = Mathf.Clamp(horizontalV, -1, 1);
+
+        dashDirection = new Vector2(inputController.getHorizontalAxis(), inputController.getVerticalAxis());
+        dashDirection.x = Mathf.Round(dashDirection.x/.5f) * .5f;
+        dashDirection.y = Mathf.Round(dashDirection.y/.5f) * .5f;
         
         //Dash
         if (inputController.isDashActive() && !usedDash && dashDirection != Vector2.zero && !grounded && equip.GetPowerupState(PowerUps.Dash)){
@@ -182,6 +182,8 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = Vector3.zero;
         rb.gravityScale = 0;
 
+        hookRenderer.Attach(point);
+
         yield return new WaitForSeconds(.1f);
 
         StartCoroutine(SwingAroundPoint(point, direction));
@@ -202,6 +204,7 @@ public class PlayerMovement : MonoBehaviour {
 
             velocity = (CustomMath.CircleVectorLerp(startPos, point, x) - nextPoint).normalized;
             nextPoint = CustomMath.CircleVectorLerp(startPos, point, x);
+            if (float.IsNaN(nextPoint.y)) { break; }
             Debug.DrawRay(transform.position, velocity.normalized * 20, Color.black);
             transform.position = nextPoint;
 
@@ -215,6 +218,7 @@ public class PlayerMovement : MonoBehaviour {
         swinging = false;
         rb.velocity = velocity.normalized * 20 + new Vector2(0, 5);
         rb.gravityScale = 4.7f;
+        hookRenderer.Dettach();
         yield break;
     }
 
