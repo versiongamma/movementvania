@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
     private bool keepAirLauncing;
     private bool swinging;
     private bool colliding;
+    private bool sliding;
 
     [Header("Sound Effects")]
     //Sound effect handling
@@ -99,8 +100,12 @@ public class PlayerMovement : MonoBehaviour {
         }
         if (inputController.getHorizontalAxis()== 0) { footstepSound.Stop(); }
 
-        // Jump Handling
-        if(inputController.isJumpActive() && (grounded || (!usedDoubleJump && equip.GetPowerupState(PowerUps.DoubleJump)))) {
+        // Jump
+        if (
+            inputController.isJumpActive() && 
+            !sliding &&
+            (grounded || (!usedDoubleJump && equip.GetPowerupState(PowerUps.DoubleJump)))
+        ) {      
             verticalV = jumpPower;
             jumpSound.pitch = 1f;
             jumpSound.Play();
@@ -136,10 +141,9 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, Vector2.right * .6f, Color.blue);
         if (onWallLeft.collider != null || onWallRight.collider != null) {
 
-
-
             if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0 && equip.GetPowerupState(PowerUps.WallJump)) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
+                sliding = true;
 
                 if (inputController.isJumpActive()) {
                     verticalV = jumpPower;
@@ -148,7 +152,7 @@ public class PlayerMovement : MonoBehaviour {
                     StartCoroutine(KeepAirLaunch(.1f));
                 }
             }
-        }
+        } else sliding = false;
 
         // Swinging
         if (!swinging)swingDirection = movementNormal > 0 ? new Vector2(.5f, .5f) : new Vector2(-.5f, .5f); 
@@ -178,7 +182,11 @@ public class PlayerMovement : MonoBehaviour {
             
             Vector2 nextPosition = Vector2.Lerp(startPos, startPos + (direction * 7), t * 20);
             RaycastHit2D collide = Physics2D.Raycast(transform.position, direction, Vector2.Distance(transform.position, nextPosition), LayerMask.GetMask("Geometry"));
-            if (collide.collider != null || colliding) { break; }
+            if (colliding) break;
+            if (collide.collider != null) { 
+                transform.position = collide.point;
+                break; 
+            }
             transform.position = nextPosition;
 
             t += Time.deltaTime;
@@ -244,9 +252,7 @@ public class PlayerMovement : MonoBehaviour {
         yield break;
     }
 
-     public void EndMovement() {
-        colliding = true;
-    }
+    public void EndMovement() { colliding = true; }
 
     void OnCollisionEnter2D(Collision2D col) { colliding = true; }
 
