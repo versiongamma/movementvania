@@ -6,7 +6,7 @@ public class CameraMovement : MonoBehaviour {
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject startingBounds;
-    private float cameraSmootingAmount = 0.4f, roomTransitionSmoothingAmount = 28f, newX, newY;
+    private float cameraSmootingAmount = 0.4f, roomTransitionSmoothingAmount = 28f, dashSmoothinAmount = 50f, newX, newY;
     private bool translateX, translateY;
     protected float minX = float.MinValue, maxX = float.MaxValue, minY = float.MinValue, maxY = float.MaxValue;
 
@@ -42,6 +42,13 @@ public class CameraMovement : MonoBehaviour {
         this.maxY = maxY;
 
         // Set the smoothing to be reset after .3 seconds
+        StartCoroutine(EndTransition(smoothing, .3f));
+    }
+
+    public void DashSmoothing() {
+        float smoothing = cameraSmootingAmount; 
+        cameraSmootingAmount = dashSmoothinAmount; 
+
         StartCoroutine(EndTransition(smoothing, .3f));
     }
 
