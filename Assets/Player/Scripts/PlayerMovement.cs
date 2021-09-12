@@ -119,8 +119,6 @@ public class PlayerMovement : MonoBehaviour {
         if (horizontalV != 0) movementNormal = Mathf.Clamp(horizontalV, -1, 1);
 
         dashDirection = new Vector2(inputController.getHorizontalAxis(), inputController.getVerticalAxis());
-
-        Debug.Log(dashDirection);
         
         //Dash
         if (
