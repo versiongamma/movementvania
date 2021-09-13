@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviour {
     public InputController inputController;
     public Animator anim;
 
-
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         equip = GetComponent<PlayerEquipment>();
@@ -190,7 +189,10 @@ public class PlayerMovement : MonoBehaviour {
 
             SaveLoad.clear();
             SaveLoad.loaded = false;
+            
         }
+
+        HandleAnimation();
     }
 
     IEnumerator Dash(Vector2 direction) {
