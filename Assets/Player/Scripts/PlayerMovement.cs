@@ -42,10 +42,12 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
-     private System.Random randInt;
+    private System.Random randInt;
 
     [Header("Input")]
-     public InputController inputController;
+    public InputController inputController;
+    public Animator anim;
+
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
