@@ -6,15 +6,15 @@ public class CameraMovement : MonoBehaviour {
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject startingBounds;
-    private float cameraSmootingAmount = 0.4f, roomTransitionSmoothingAmount = 28f, newX, newY;
+    private float cameraSmootingAmount = 20f, roomTransitionSmoothingAmount = 10f, dashSmoothinAmount = 5f, newX, newY;
     private bool translateX, translateY;
-    protected float minX = float.MinValue, maxX = float.MaxValue, minY = float.MinValue, maxY = float.MaxValue;
+    private float minX = float.MinValue, maxX = float.MaxValue, minY = float.MinValue, maxY = float.MaxValue;
 
     void Start() {
         startingBounds.GetComponent<CameraBoundsHandler>().SetCameraBounds(this.GetComponent<Camera>());
     }
     
-    void FixedUpdate() {
+    void Update() {
         if (translateX) { newX = player.transform.position.x; }
         if (translateY) { newY = player.transform.position.y + 6; }
 
@@ -23,10 +23,7 @@ public class CameraMovement : MonoBehaviour {
         newX = Mathf.Clamp(newX, minX, maxX > minX ? maxX : minX);
         newY = Mathf.Clamp(newY, minY, maxY > minY ? maxY : minY);
 
-
-                                                                                             // Invert camera smoothing so higher 
-                                                                                             // value means more smoothing
-        transform.position = Vector3.Slerp(transform.position, new Vector3(newX, newY, -10), 1 / cameraSmootingAmount * 10);
+        transform.position = Vector3.Slerp(transform.position, new Vector3(newX, newY, -10), cameraSmootingAmount * Time.deltaTime);
     }
 
     public void Transition(float minX, float minY, float maxX, float maxY) {
@@ -45,6 +42,13 @@ public class CameraMovement : MonoBehaviour {
         StartCoroutine(EndTransition(smoothing, .3f));
     }
 
+    public void DashSmoothing() {
+        float smoothing = cameraSmootingAmount; 
+        cameraSmootingAmount = dashSmoothinAmount; 
+
+        StartCoroutine(EndTransition(smoothing, .3f));
+    }
+
     public void SetTranslation(bool x, bool y) {
         translateX = x;
         translateY = y;
@@ -54,5 +58,27 @@ public class CameraMovement : MonoBehaviour {
     private IEnumerator EndTransition(float smoothing, float delta) {
         yield return new WaitForSeconds(delta);
         cameraSmootingAmount = smoothing;
+    }
+
+    public void setCameraMinMax(float minx, float maxx, float miny, float maxy) 
+    {
+        Transition(minx, miny, maxx, maxy);
+    }
+
+    public float[] getCameraMinMax()
+    {
+        return new float[] { this.minX, this.maxX, this.minY, this.maxY };
+    }
+
+    public bool getCameraTranslateX() {
+        return this.translateX;
+    }
+    
+    public bool getCameraTranslateY() {
+        return this.translateY;
+    }
+
+    public GameObject getStartingBounds() {
+        return this.startingBounds;
     }
 }

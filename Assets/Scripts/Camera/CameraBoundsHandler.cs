@@ -24,4 +24,9 @@ public class CameraBoundsHandler : MonoBehaviour {
         cameraMovement.Transition(minX, minY, maxX, maxY);
         cameraMovement.SetTranslation(translateX, translateY);
     }
+
+    public CameraBoundsHandler get()
+    {
+        return this;
+    }
 }
