@@ -232,9 +232,12 @@ public class PlayerMovement : MonoBehaviour {
 
     void HandleAnimation()
     {
-        anim.SetFloat("Speed", Mathf.Abs(inputController.getHorizontalAxis()));
-        anim.SetBool("isJumping", !grounded);
+        anim.SetFloat("xVel", Mathf.Abs(inputController.getHorizontalAxis()));
+        anim.SetFloat("yVel", rb.velocity.y);
+        anim.SetBool("isJumping", inputController.isJumpActive());
         anim.SetBool("isDashing", inputController.isDashActive());
+        anim.SetBool("isGrounded", grounded);
+        anim.SetBool("hasDoubleJumped", usedDoubleJump);
     }
 
     IEnumerator StartSwing(Vector2 point, bool direction) {
