@@ -19,6 +19,8 @@ public class InputController : MonoBehaviour
     public static KeyCode swing;
     public static KeyCode left;
     public static KeyCode right;
+    public static KeyCode up;
+    public static KeyCode down;
     public static KeyCode map;
     public static KeyCode inventory;
 
@@ -27,7 +29,7 @@ public class InputController : MonoBehaviour
         if (isControllerActive())
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKeyController", (int)KeyCode.JoystickButton0);
-            dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton1);
+            dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton5);
             swing = (KeyCode) PlayerPrefs.GetInt("swingKeyController", (int)KeyCode.JoystickButton4);
             /*
             left = ;
@@ -44,6 +46,8 @@ public class InputController : MonoBehaviour
             swing = (KeyCode) PlayerPrefs.GetInt("swingKey", (int)KeyCode.LeftShift);
             left = (KeyCode) PlayerPrefs.GetInt("leftKey", (int)KeyCode.A);
             right = (KeyCode) PlayerPrefs.GetInt("rightKey", (int)KeyCode.D);
+            up = (KeyCode) PlayerPrefs.GetInt("upKey", (int)KeyCode.W);
+            down = (KeyCode) PlayerPrefs.GetInt("downKey", (int)KeyCode.S);
             map = (KeyCode) PlayerPrefs.GetInt("mapKey", (int)KeyCode.M);
             inventory = (KeyCode) PlayerPrefs.GetInt("inventory", (int)KeyCode.I);
         }
@@ -157,6 +161,22 @@ public class InputController : MonoBehaviour
         smoothingValue = (Mathf.Abs(smoothingValue) < dead) ? 0f : smoothingValue;
         return smoothingValue;
         */
+    }
+
+    public float getVerticalAxis()
+    {
+        if (isControllerActive())
+            return Input.GetAxis("Vertical");
+        float ret = 0;
+        if (Input.GetKey(down))
+        {
+            ret += -1f;
+        }
+        if (Input.GetKey(up))
+        {
+            ret += 1f;
+        };
+        return ret;
     }
 
     public bool controllerButtonPressed()
