@@ -9,7 +9,8 @@ public class SaveData
     public float[] position;
     public float[] cameraPosition;
     public float[] cameraMinMax;
+    public bool translateX;
+    public bool translateY;
     public int health;
     public bool[] powerups;
-    public CameraBoundsHandler startingBounds;
 }

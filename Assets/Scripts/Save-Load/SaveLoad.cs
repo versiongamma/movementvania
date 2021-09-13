@@ -11,9 +11,10 @@ public static class SaveLoad
     public static float[] position;
     public static float[] cameraPosition;
     public static float[] cameraMinMax;
+    public static bool translateX;
+    public static bool translateY;
     public static int health;
     public static bool[] powerups;
-    public static CameraBoundsHandler startingBounds;
 
     public static void saveData(PlayerData pd) 
     {
@@ -40,7 +41,8 @@ public static class SaveLoad
         save.cameraMinMax[2] = pd.cameraMinMax[2];
         save.cameraMinMax[3] = pd.cameraMinMax[3];
 
-        save.startingBounds = pd.startingBounds;
+        save.translateX = pd.translateX;
+        save.translateY = pd.translateY;
 
         string savePath = Application.persistentDataPath + "/SaveData.bin";
         Debug.Log(savePath);
@@ -72,7 +74,8 @@ public static class SaveLoad
         cameraMinMax[2] = save.cameraMinMax[2];
         cameraMinMax[3] = save.cameraMinMax[3];
 
-        startingBounds = save.startingBounds;
+        translateX = save.translateX;
+        translateY = save.translateY;
 
         health = save.health;
 
@@ -89,6 +92,5 @@ public static class SaveLoad
         cameraMinMax = null;
         health = new int();
         powerups = null;
-        startingBounds = null;
     }
 }

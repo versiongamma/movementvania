@@ -66,6 +66,14 @@ public class CameraMovement : MonoBehaviour {
         return new float[] { this.minX, this.maxX, this.minY, this.maxY };
     }
 
+    public bool getCameraTranslateX() {
+        return this.translateX;
+    }
+    
+    public bool getCameraTranslateY() {
+        return this.translateY;
+    }
+
     public GameObject getStartingBounds() {
         return this.startingBounds;
     }

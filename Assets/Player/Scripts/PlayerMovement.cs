@@ -166,9 +166,8 @@ public class PlayerMovement : MonoBehaviour {
 
             Camera.main.transform.position = new Vector3(SaveLoad.cameraPosition[0], SaveLoad.cameraPosition[1], SaveLoad.cameraPosition[2]);
 
+            GameObject.Find("Main Camera").GetComponent<CameraMovement>().SetTranslation(SaveLoad.translateX, SaveLoad.translateY);
             GameObject.Find("Main Camera").GetComponent<CameraMovement>().setCameraMinMax(SaveLoad.cameraMinMax[0], SaveLoad.cameraMinMax[1], SaveLoad.cameraMinMax[2], SaveLoad.cameraMinMax[3]);
-     
-            SaveLoad.startingBounds.GetComponent<CameraBoundsHandler>().SetCameraBounds(Camera.main);
 
             equip.setPowerUps(SaveLoad.powerups);
 

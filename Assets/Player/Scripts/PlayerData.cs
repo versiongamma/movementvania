@@ -11,9 +11,9 @@ public class PlayerData : MonoBehaviour
     public float[] cameraMinMax;
     public int playerHealth;
     public bool[] playerPowerups;
+    public bool translateX;
+    public bool translateY;
     public string activeSceneName;
-    public CameraBoundsHandler startingBounds;
-    // Something here for saving player room to get proper camera placement
 
     public PlayerData()
     {
@@ -29,15 +29,12 @@ public class PlayerData : MonoBehaviour
         this.playerPowerups = player.GetComponent<PlayerEquipment>().getPowerUps();
         this.activeSceneName = SceneManager.GetActiveScene().name;
         this.cameraMinMax = GameObject.Find("Main Camera").GetComponent<CameraMovement>().getCameraMinMax();
-        Debug.Log(Camera.main.transform.position.x);
-        Debug.Log(Camera.main.transform.position.y);
-        Debug.Log(Camera.main.transform.position.z);
         this.cameraPosition = Camera.main.transform.position;
-        this.startingBounds = Camera.main.GetComponent<CameraMovement>().getStartingBounds().GetComponent<CameraBoundsHandler>().get();
-        Debug.Log(startingBounds);
+        this.translateX = GameObject.Find("Main Camera").GetComponent<CameraMovement>().getCameraTranslateX();
+        this.translateY = GameObject.Find("Main Camera").GetComponent<CameraMovement>().getCameraTranslateY();
+
         if (this.playerPosition != null && this.playerHealth != null && this.playerPowerups != null)
         {
-            // call save function
             SaveLoad.saveData(this);
         }
     }
@@ -51,7 +48,6 @@ public class PlayerData : MonoBehaviour
         this.playerPowerups = SaveLoad.powerups;
         this.activeSceneName = SaveLoad.activeSceneName;
         this.cameraMinMax = SaveLoad.cameraMinMax;
-        this.startingBounds = SaveLoad.startingBounds;
         GameObject pauseMenu = GameObject.Find("PauseMenu");
         pauseMenu.GetComponent<PauseMenuUIToggle>().HidePanel();
         PauseMenu pm = GameObject.FindObjectOfType(typeof(PauseMenu)) as PauseMenu;
