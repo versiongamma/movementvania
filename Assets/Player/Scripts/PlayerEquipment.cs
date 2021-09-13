@@ -30,4 +30,14 @@ public class PlayerEquipment : MonoBehaviour {
         Debug.Log(powerups[((int)PowerUps.DoubleJump)]);
     }
 
+    public bool[] getPowerUps() 
+    {
+        return this.powerups;
+    }
+
+    public void setPowerUps(bool[] pu) 
+    {
+        this.powerups = pu;
+    }
+
 }
