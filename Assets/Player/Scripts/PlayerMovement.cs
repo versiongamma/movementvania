@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour {
 
     [Header("Input")]
      public InputController inputController;
+    public Animator anim;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -188,7 +189,19 @@ public class PlayerMovement : MonoBehaviour {
 
             SaveLoad.clear();
             SaveLoad.loaded = false;
+            
         }
+
+        HandleAnimation();
+    }
+
+    void HandleAnimation()
+    {
+        anim.SetFloat("xVel", Mathf.Abs(inputController.getHorizontalAxis()));
+        anim.SetFloat("yVel", rb.velocity.y);
+        anim.SetBool("isDashing", inputController.isDashActive());
+        anim.SetBool("isGrounded", grounded);
+        anim.SetBool("hasDoubleJumped", usedDoubleJump);
     }
 
     IEnumerator Dash(Vector2 direction) {
