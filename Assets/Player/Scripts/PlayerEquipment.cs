@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum PowerUps {
         DoubleJump = 0,
-        Dash = 1
+        Dash = 1,
+        WallJump = 2,
+        Swing = 3
     }
+
 public class PlayerEquipment : MonoBehaviour {
     // Start is called before the first frame update
 
