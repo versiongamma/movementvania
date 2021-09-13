@@ -227,6 +227,14 @@ public class PlayerMovement : MonoBehaviour {
         yield return new WaitForSeconds(time);
         keepAirLauncing = false;
         airLauncing = false;
+        HandleAnimation();
+    }
+
+    void HandleAnimation()
+    {
+        anim.SetFloat("Speed", Mathf.Abs(inputController.getHorizontalAxis()));
+        anim.SetBool("isJumping", !grounded);
+        anim.SetBool("isDashing", inputController.isDashActive());
     }
 
     IEnumerator StartSwing(Vector2 point, bool direction) {
