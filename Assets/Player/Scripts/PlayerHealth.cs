@@ -31,8 +31,7 @@ public class PlayerHealth : MonoBehaviour
         return this.currentHealth;
     }
 
-    void TakeDamage(int damage)
-    {
+    public void TakeDamage(int damage) {
         currentHealth -= damage;
 
         healthBar.SetHealth(currentHealth);
@@ -40,10 +39,8 @@ public class PlayerHealth : MonoBehaviour
        
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.collider.name == "Enemy")
-        {
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if(collision.collider.name == "Enemy") {
             TakeDamage(5);
         }
     }
