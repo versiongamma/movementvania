@@ -152,6 +152,14 @@ public class PlayerMovement : MonoBehaviour {
 
 
         rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
+        HandleAnimation();
+    }
+
+    void HandleAnimation()
+    {
+        anim.SetFloat("Speed", Mathf.Abs(inputController.getHorizontalAxis()));
+        anim.SetBool("isJumping", !grounded);
+        anim.SetBool("isDashing", inputController.isDashActive());
     }
 
     IEnumerator StartSwing(Vector2 point, bool direction) {
