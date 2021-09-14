@@ -46,7 +46,10 @@ public class PlayerMovement : MonoBehaviour {
 
     [Header("Input")]
     public InputController inputController;
-    public Animator anim;
+
+    [Header("Animation")]
+    [SerializeField] private Animator anim;
+    [SerializeField] private GameObject sprite;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -234,6 +237,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void HandleAnimation()
     {
+        if (inputController.getHorizontalAxis() != 0) sprite.transform.localScale = new Vector2(inputController.getHorizontalAxis() * 4f, 4);
+
         anim.SetFloat("xVel", Mathf.Abs(inputController.getHorizontalAxis()));
         anim.SetFloat("yVel", rb.velocity.y);
         anim.SetBool("isJumping", inputController.isJumpActive());
