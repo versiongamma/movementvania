@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Animator anim;
     [SerializeField] private GameObject sprite;
 
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         equip = GetComponent<PlayerEquipment>();
