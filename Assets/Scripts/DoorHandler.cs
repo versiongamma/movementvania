@@ -9,6 +9,7 @@ public class DoorHandler : MonoBehaviour {
     private GameObject player;
     [SerializeField] private GameObject newCameraBounds;
     [SerializeField] private Side doorSide;
+    [SerializeField] private float travelDistance = 5;
 
     private CameraMovement camMove;
     private CameraBoundsHandler boundsHandler;
@@ -21,7 +22,7 @@ public class DoorHandler : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         player.GetComponent<PlayerMovement>().EndMovement();
-        float playerTranslateX = doorSide == Side.Left ? -5 : doorSide == Side.Right ? 5 : 0;
+        float playerTranslateX = doorSide == Side.Left ? -travelDistance : doorSide == Side.Right ? travelDistance : 0;
         player.transform.position += new Vector3(playerTranslateX, 0, 0);
         boundsHandler.SetCameraBounds(mainCamera);
     }
