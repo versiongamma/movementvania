@@ -2,50 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
 
-public class updateKeyBind : MonoBehaviour
+public class updateKeyBindsController : MonoBehaviour
 {
 
     public int selector;
+    public int pressedKey = 0;
 
-    public void setKeyBind(int sel)
+    public void setKeyBindController(int sel)
     {
         selector = sel;
         var inputField = GameObject.Find("InputTextField").GetComponent<InputField>();
         inputField.transform.position = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
-        var se = new InputField.OnChangeEvent();
-        se.AddListener(finalSetKeyBind);
-        inputField.onValueChanged = se;
         EventSystem es = EventSystem.current;
         es.SetSelectedGameObject(GameObject.Find("InputTextField"));
         inputField.text = "~Press a key/button";
+        int pressedKey = 0;
+        StartCoroutine("getControllerKeyPress");
     }
 
-    private void finalSetKeyBind(string arg0)
+    IEnumerator getControllerKeyPress()
     {
-        int key = (int)(char)arg0[0];
-        if (key == 126)
-            return;
+        while (pressedKey < 330 || pressedKey > 350)
+        {
+            for (int i = 330; i < 350; i++)
+            {
+                if (Input.GetKey((KeyCode)i))
+                {
+                    pressedKey = i;
+                    break;
+                }
+            }
+            yield return null; // Sleep for a frame before checking keys again, ensures the game doesn't lock up eternally
+        }
+        if (pressedKey != 0)
+            finalSetKeyBind(pressedKey);
+    }
+
+    private void finalSetKeyBind(int key)
+    {
+        Debug.Log((KeyCode)key); 
         string keyString;
-        switch (selector) {
-            case 0:
-                keyString = "leftKey";
-                break;
-            case 1:
-                keyString = "rightKey";
-                break;
+        switch (selector)
+        {
             case 2:
-                keyString = "jumpKey";
+                keyString = "jumpKeyController";
                 break;
             case 3:
-                keyString = "dashKey";
+                keyString = "dashKeyController";
                 break;
             case 4:
-                keyString = "mapKey";
+                keyString = "mapKeyController";
                 break;
             case 5:
-                keyString = "inventoryKey";
+                keyString = "inventoryKeyController";
                 break;
             default:
                 // Error here!
@@ -56,14 +67,9 @@ public class updateKeyBind : MonoBehaviour
         {
             PlayerPrefs.SetInt(keyString, key);
             inputController.setShouldUpdateKeyBindings(true);
+            inputController.updateControllerActive(true);
             switch (selector)
             {
-                case 0:
-                    inputController.updateLeftBind((KeyCode)key);
-                    break;
-                case 1:
-                    inputController.updateRightBind((KeyCode)key);
-                    break;
                 case 2:
                     inputController.updateJumpBind((KeyCode)key);
                     break;
