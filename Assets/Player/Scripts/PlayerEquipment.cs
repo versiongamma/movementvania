@@ -17,6 +17,14 @@ public class PlayerEquipment : MonoBehaviour {
     [SerializeField] private bool wallJump;
     [SerializeField] private bool swing;
     private bool[] powerups;
+    private Inventory inventory;
+    [SerializeField] private UI_Inventory uiInventory;
+
+    void Awake()
+    {
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
+    }
 
     void Start() {
         powerups = new bool[]{doubleJump, dash, wallJump, swing};
@@ -25,7 +33,9 @@ public class PlayerEquipment : MonoBehaviour {
     public bool GetPowerupState(PowerUps index) { return powerups[(int)index]; }
 
     public void GivePowerup(PowerUps index) { 
-        //Debug.Log(index);
+        inventory.AddPowerup("" + index);
+        uiInventory.SetInventory(inventory);
+
         powerups[(int)index] = true; 
         Debug.Log(powerups[((int)PowerUps.DoubleJump)]);
     }

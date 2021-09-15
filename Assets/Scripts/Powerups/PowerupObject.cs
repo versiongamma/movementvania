@@ -11,8 +11,8 @@ public class PowerupObject : MonoBehaviour {
     }
 
     [SerializeField] private GameObject canvas, cam;
-    [SerializeField] private Text powerupNameUI, actionUI, keyUI, resultUI;
-    [SerializeField] private string powerupName, action, result;  
+    [SerializeField] public Text powerupNameUI, actionUI, keyUI, resultUI;
+    [SerializeField] public string powerupName, action, result;  
     [SerializeField] private PowerUps powerup; 
     [SerializeField] private Key key;
     private KeyCode keyString;
@@ -34,8 +34,6 @@ public class PowerupObject : MonoBehaviour {
         if (other.gameObject.name == "Player") {
             other.gameObject.GetComponent<PlayerEquipment>().GivePowerup(powerup);
             canvas.transform.position = (Vector2) cam.transform.position + new Vector2(0, -5);
-            
-            
             
             sound.Play();
             StartCoroutine(ShowTooltip(canvas));
