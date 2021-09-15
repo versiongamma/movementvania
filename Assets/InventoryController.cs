@@ -7,7 +7,7 @@ public class InventoryController : MonoBehaviour
     [SerializeField] public GameObject inventoryUI;
     [SerializeField] public bool viewInventory;
 
-    // Update is called once per frame
+    // Checks if the user has pressed the key for inventory
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -25,11 +25,13 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    // Shows inventory
     public void InventoryView()
     {
         inventoryUI.SetActive(true);
     }
 
+    // Hides inventory
     public void InventoryHide()
     {
         inventoryUI.SetActive(false);

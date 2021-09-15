@@ -11,12 +11,14 @@ public class PlayerHealth : MonoBehaviour
     public HealthBar healthBar;
     public GameObject Player;
 
+    // Sets the users health to its max on start, same for health bar
     void Start()
     {
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
     }
 
+    // Checks for if user has died
     void Update()
     {
         if (currentHealth <= 0)
@@ -31,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
         return this.currentHealth;
     }
 
+    // Damages player and adjusts healthbar to suit
     public void TakeDamage(int damage) {
         currentHealth -= damage;
 
@@ -39,6 +42,7 @@ public class PlayerHealth : MonoBehaviour
        
     }
 
+    // If the player collides with enemy calls damage function
     private void OnCollisionEnter2D(Collision2D collision) {
         if(collision.collider.name == "Enemy") {
             TakeDamage(5);

@@ -20,6 +20,7 @@ public class PlayerEquipment : MonoBehaviour {
     private Inventory inventory;
     [SerializeField] private UI_Inventory uiInventory;
 
+    // On awake initialises inventory and updates UI inventory
     void Awake()
     {
         inventory = new Inventory();
@@ -33,7 +34,9 @@ public class PlayerEquipment : MonoBehaviour {
     public bool GetPowerupState(PowerUps index) { return powerups[(int)index]; }
 
     public void GivePowerup(PowerUps index) { 
+        // Adds powerup as a string to the inventory array
         inventory.AddPowerup("" + index);
+        // Updates UI inventory
         uiInventory.SetInventory(inventory);
 
         powerups[(int)index] = true; 
