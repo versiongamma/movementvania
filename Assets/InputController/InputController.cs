@@ -132,35 +132,6 @@ public class InputController : MonoBehaviour
             ret += 1f;
         };
         return ret;
-        /*
-        float dead = 0.001f;
-        float sensitivity = 3f;
-        if (Input.GetKey(left))
-        {
-            float target = (Input.GetKey(left)) ? -1f : 0f;
-            smoothingValue = Mathf.MoveTowards(smoothingValue, target, sensitivity * Time.deltaTime);
-        }
-        if (Input.GetKey(right))
-        {
-            float target = (Input.GetKey(right)) ? 1f : 0f;
-            smoothingValue = Mathf.MoveTowards(smoothingValue, target, sensitivity * Time.deltaTime);
-        };
-        
-        if (!(Input.GetKey(left) || Input.GetKey(right))) {
-            if (smoothingValue < 0)
-                smoothingValue += 0.05f;
-            if (smoothingValue > 0)
-                smoothingValue += -0.05f;
-        }
-        
-        if (smoothingValue >= smoothingValueMax)
-            smoothingValue = smoothingValueMax;
-        if (smoothingValue <= smoothingValueMin)
-            smoothingValue = smoothingValueMin;
-        //Debug.Log(smoothingValue);
-        smoothingValue = (Mathf.Abs(smoothingValue) < dead) ? 0f : smoothingValue;
-        return smoothingValue;
-        */
     }
 
     public float getVerticalAxis()

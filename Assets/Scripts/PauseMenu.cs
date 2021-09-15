@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
 
     // Update is called once per frame
    private void Update(){
-        if (Input.GetKeyDown(KeyCode.Escape)){
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7)) { // Might be different for other controllers, on my switch pro controller this is the '+' key, 'Home' key doesn't get detected so this is the second best option
             gameIsPaused = !gameIsPaused;
 
             if (gameIsPaused)

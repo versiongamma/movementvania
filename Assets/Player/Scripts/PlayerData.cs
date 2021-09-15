@@ -49,6 +49,10 @@ public class PlayerData : MonoBehaviour
         this.activeSceneName = SaveLoad.activeSceneName;
         this.cameraMinMax = SaveLoad.cameraMinMax;
         GameObject pauseMenu = GameObject.Find("PauseMenu");
+        if (pauseMenu == null) {
+            SceneManager.LoadScene(this.activeSceneName, LoadSceneMode.Single);
+            return;
+        }
         pauseMenu.GetComponent<PauseMenuUIToggle>().HidePanel();
         PauseMenu pm = GameObject.FindObjectOfType(typeof(PauseMenu)) as PauseMenu;
         pm.setPaused(false);
