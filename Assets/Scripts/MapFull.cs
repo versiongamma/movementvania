@@ -7,7 +7,7 @@ public class MapFull : MonoBehaviour
     [SerializeField] public GameObject mapFullUI;
     [SerializeField] public bool viewMap;
 
-    // Update is called once per frame
+    // Checks for if user has pressed M key to open map
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
@@ -25,17 +25,20 @@ public class MapFull : MonoBehaviour
         }
     }
 
+    // Show map
     public void MapView()
     {
         mapFullUI.SetActive(true);
     }
 
+    // Hide map
     public void MapHide()
     {
         mapFullUI.SetActive(false);
         Time.timeScale = 1;
     }
 
+    // Used to update the local variable if map is hidden from another function
     public void updateViewMap()
     {
         viewMap = !viewMap;

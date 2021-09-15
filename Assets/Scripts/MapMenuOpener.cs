@@ -6,6 +6,7 @@ public class MapMenuOpener : MonoBehaviour
 {
     [SerializeField] public GameObject mapFullUI;
 
+    // Functions to open and hide map 
     public void OpenPanel()
     {
         if (mapFullUI != null)
