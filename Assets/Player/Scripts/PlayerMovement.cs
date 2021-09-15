@@ -42,15 +42,21 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
-     private System.Random randInt;
+    private System.Random randInt;
 
     [Header("Input")]
-     public InputController inputController;
+    public InputController inputController;
+
+    [Header("Animation")]
+    [SerializeField] private GameObject sprite;
+    private PlayerAnimationController anim;
+
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         equip = GetComponent<PlayerEquipment>();
         inputController = GetComponent<InputController>();
+        anim = sprite.GetComponent<PlayerAnimationController>();
         randInt = new System.Random();
     }
     void Update() {
@@ -65,9 +71,12 @@ public class PlayerMovement : MonoBehaviour {
             usedDoubleJump = false;
             usedDash = false;
             airLauncing = false;
+
         } else {
             grounded = false;
         }
+
+        anim.UpdateGroundedState(grounded);
 
         float horizontalV = rb.velocity.x;
         float verticalV = rb.velocity.y;
@@ -107,14 +116,17 @@ public class PlayerMovement : MonoBehaviour {
             inputController.isJumpActive() && 
             !sliding &&
             (grounded || (!usedDoubleJump && equip.GetPowerupState(PowerUps.DoubleJump)))
-        ) {      
+        ) {        
             verticalV = jumpPower;
             jumpSound.pitch = 1f;
             jumpSound.Play();
             if (!grounded && !usedDoubleJump)
             {
+                anim.PlayDoubleJump();
                 usedDoubleJump = true;
                 jumpSound.pitch = 1.3f;
+            } else {
+                anim.PlayJump();
             }
         }
 
@@ -141,7 +153,7 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, Vector2.right * .6f, Color.blue);
         if (onWallLeft.collider != null || onWallRight.collider != null) {
 
-            if (verticalV <= 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0 && equip.GetPowerupState(PowerUps.WallJump)) {
+            if (verticalV < 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0 && equip.GetPowerupState(PowerUps.WallJump)) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
                 sliding = true;
 
@@ -150,25 +162,34 @@ public class PlayerMovement : MonoBehaviour {
                     horizontalV = -inputController.getHorizontalAxis() * 15;
                     airLauncing = true;
                     StartCoroutine(KeepAirLaunch(.1f));
+
+                    anim.PlayDoubleJump();
                 }
             }
         } else sliding = false;
+
+        anim.UpdateSliding(sliding);
 
         // Swinging
         if (!swinging)swingDirection = movementNormal > 0 ? new Vector2(.5f, .5f) : new Vector2(-.5f, .5f); 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
-        if (hit.collider != null && !grounded) {
+        if (hit.collider != null && !grounded && !sliding) {
             hookIndicatorRenderer.Display(hit.point);
             if (inputController.isSwingDown()  && equip.GetPowerupState(PowerUps.Swing)) { 
+                anim.PlayStartSwing(hit.point);
                 StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
             }
         } else hookIndicatorRenderer.Remove();
 
 
-        rb.velocity = new Vector3(horizontalV, Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue), 0);
+        verticalV = Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue);
+        rb.velocity = new Vector3(horizontalV, verticalV, 0);
+        anim.UpdateVelocity(inputController.getHorizontalAxis(), verticalV);
 
+
+        // Save loading
         if (SaveLoad.loaded)
         {
             Debug.Log("Moving player to loaded position!");
@@ -188,6 +209,7 @@ public class PlayerMovement : MonoBehaviour {
 
             SaveLoad.clear();
             SaveLoad.loaded = false;
+            
         }
     }
 
@@ -270,6 +292,7 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = velocity.normalized * 20 + new Vector2(0, 5);
         rb.gravityScale = 4.7f;
         hookRenderer.Dettach();
+        anim.PlayStopSwing();
         yield break;
     }
 
