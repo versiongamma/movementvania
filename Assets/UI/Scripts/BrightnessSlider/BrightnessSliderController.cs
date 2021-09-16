@@ -10,9 +10,12 @@ public class BrightnessSliderController : MonoBehaviour
     private ColorGrading colorGrading;
     public PostProcessProfile brightnessProfile;
     // Start is called before the first frame update
+
+    //Alters the color grading effect in the postproccessprofile to change brightness
     void Start()
     {
         brightnessSlider = GetComponent<Slider>();
+        
         
         brightnessProfile.TryGetSettings(out colorGrading);
         brightnessSlider.value = colorGrading.brightness.value;

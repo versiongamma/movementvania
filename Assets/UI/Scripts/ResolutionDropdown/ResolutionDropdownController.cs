@@ -10,6 +10,7 @@ public class ResolutionDropdownController : MonoBehaviour
 
     void Start()
     {
+        //Gets all possible screen resolutuions depending on monitor
         resolutions = Screen.resolutions;
         resDropdown.ClearOptions();
 
@@ -18,10 +19,12 @@ public class ResolutionDropdownController : MonoBehaviour
         int currentResolution = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
+            //Store resolution options in a string
             string res = resolutions[i].width + " x " + resolutions[i].height + 
                          " " + resolutions[i].refreshRate + "Hz";
             dropdownOptions.Add(res);
 
+            //Automatically sets game resolution to current screen resolution.
             if (resolutions[i].width == Screen.width &&
                 resolutions[i].height == Screen.height)
             {
@@ -36,6 +39,7 @@ public class ResolutionDropdownController : MonoBehaviour
 
     public void setRes(int resIndex)
     {
+        //Sets resolution, using index of dropdown menu options to choose which one.
         Resolution res = resolutions[resIndex];
         Screen.SetResolution(res.width, res.height, Screen.fullScreen);
     }
