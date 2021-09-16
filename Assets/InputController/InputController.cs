@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
-    // controllerActive : Boolean for whether a controller is being used or not
-    public bool controllerActive = false;
-    // shouldUpdateKeyBindings : Boolean for whether or not the keybindings have been updated in the settings menu
+
+    /*
+     * Class for handling all user input regarding PlayerMovement
+     * Allows for users to hot-swap between using a keyboard or using a controller without having conflicting keybinds set
+     */
+
+    // Class variables
+    public static bool controllerActive = false;
     public static bool shouldUpdateKeyBindings = false;
     public static float smoothingValue = 0;
     public static int smoothingValueMax = 1;
     public static int smoothingValueMin = -1;
-
     // Key bindings
-    // ADD IN CONTROLLER PRESETS AS WELL
     public static KeyCode jump;
     public static KeyCode dash;
     public static KeyCode swing;
@@ -24,17 +27,17 @@ public class InputController : MonoBehaviour
     public static KeyCode map;
     public static KeyCode inventory;
 
+    /*
+     * updateKeyBindingsFromFile() : Get previously saved keybindings from disk via PlayerPrefs
+     * Function is called after a modification is made to the saved keybindings in the control settings
+     */
     public void updateKeyBindingsFromFile()
     {
-        if (isControllerActive())
+        if (isControllerActive()) // Ensure that a controller is present and active to ensure that the correct keybindings are set
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKeyController", (int)KeyCode.JoystickButton0);
             dash = (KeyCode) PlayerPrefs.GetInt("dashKeyController", (int)KeyCode.JoystickButton5);
             swing = (KeyCode) PlayerPrefs.GetInt("swingKeyController", (int)KeyCode.JoystickButton4);
-            /*
-            left = ;
-            right = ;
-            */
             map = (KeyCode) PlayerPrefs.GetInt("mapKeyController", (int)KeyCode.JoystickButton3);
             inventory = (KeyCode) PlayerPrefs.GetInt("mapKeyController", (int)KeyCode.JoystickButton2);
              
@@ -52,7 +55,7 @@ public class InputController : MonoBehaviour
             inventory = (KeyCode) PlayerPrefs.GetInt("inventory", (int)KeyCode.I);
         }
     }
-
+    // Setters //
     public void updateJumpBind(KeyCode b) 
     {
         jump = b;
@@ -80,17 +83,15 @@ public class InputController : MonoBehaviour
     {
         shouldUpdateKeyBindings = b;
     }
-
+    public void updateControllerActive(bool b)
+    {
+        controllerActive = b;
+    }
+    // Getters //
     public bool isControllerActive() 
     {
         return controllerActive; 
     }
-
-    public void updateControllerActive(bool b) 
-    {
-        controllerActive = b;
-    }
-
     public bool isJumpActive() 
     {
         return Input.GetKeyDown(jump);
@@ -112,12 +113,14 @@ public class InputController : MonoBehaviour
     {
         return Input.GetKeyDown(map);
     }
-
     public bool isInventoryActive()
     {
         return Input.GetKeyDown(inventory);
     }
-
+    /*
+     * Wrapper for the Input.GetAxis() function as we only wish to use the Input.GetAxis() function when using a controller
+     * Keyboard input replicates the Input.GetAxis() function, without smoothing
+     */
     public float getHorizontalAxis()
     {
         if (isControllerActive())
@@ -133,7 +136,9 @@ public class InputController : MonoBehaviour
         };
         return ret;
     }
-
+    /*
+     * Same as above
+     */
     public float getVerticalAxis()
     {
         if (isControllerActive())
@@ -149,15 +154,17 @@ public class InputController : MonoBehaviour
         };
         return ret;
     }
-
+    /*
+     * Check every possible controller button to detect whether or not one is connected and being used
+     */
     public bool controllerButtonPressed()
     {
-        for (int i = 330; i < 350; i++)
+        for (int i = 330; i < 350; i++) // 330 -> 349 are all valid KeyCodes for controller buttons
         {
             if (Input.GetKey((KeyCode)i))
                 return true;
         }
-        if (Input.GetAxis("Horizontal") > 0.6f || Input.GetAxis("Horizontal") < -0.6f)
+        if (Input.GetAxis("Horizontal") > 0.6f || Input.GetAxis("Horizontal") < -0.6f) // Combat small random drift values that some controllers output when the joysticks are not being moved
         {
             return true;
         }

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public static class SaveLoad
 {
+    // Class variables
     public static bool loaded = false;
     public static string activeSceneName;
     public static float[] position;
@@ -16,8 +17,12 @@ public static class SaveLoad
     public static int health;
     public static bool[] powerups;
 
+    /*
+     * Write given PlayerData data to disk for loading at a later time
+     */
     public static void saveData(PlayerData pd) 
     {
+        // Convert the given PlayerData object into a SaveData object for writing to disk
         SaveData save = new SaveData();
 
         save.activeSceneName = pd.activeSceneName;
@@ -43,15 +48,17 @@ public static class SaveLoad
 
         save.translateX = pd.translateX;
         save.translateY = pd.translateY;
-
+        // Writes save data to the 'AppData' folder on Windows, not sure about MacOS
         string savePath = Application.persistentDataPath + "/SaveData.bin";
-        Debug.Log(savePath);
+        // Convert SaveData object to JSON data for writing
         string jsonData = JsonUtility.ToJson(save, true);
-
         File.WriteAllText(savePath, jsonData);
 
     }
 
+    /*
+     * Load data from a JSON file on disk and populate ourselves with said data
+     */
     public static void loadData() 
     {
         clear();
@@ -83,7 +90,9 @@ public static class SaveLoad
 
         loaded = true;
     }
-
+    /*
+     * Null out all current data, to ensure that no leftover data is present 
+     */
     public static void clear() 
     {
         activeSceneName = null;
