@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveData
 {
+    // Class variables
     public string activeSceneName;
     public float[] position;
     public float[] cameraPosition;
