@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Attached to each camera bounds, which have a box collider that determine where the camera can move
 public class CameraBoundsHandler : MonoBehaviour {
 
     private CameraMovement cameraMovement;
-    [SerializeField] private bool translateX, translateY;
+    [SerializeField] private bool translateX, translateY; // Can be used to specify how the camera should move within these bounds
 
     public void SetCameraBounds(Camera camera) {
         cameraMovement = camera.GetComponent<CameraMovement>();
