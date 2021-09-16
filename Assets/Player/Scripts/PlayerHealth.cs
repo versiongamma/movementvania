@@ -19,6 +19,8 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
+        //if the current health of the player is less than or equal to 0
+        //then the player is destroyed and the game over menu is called
         if (currentHealth <= 0)
         {
             Destroy(Player);
@@ -39,8 +41,11 @@ public class PlayerHealth : MonoBehaviour
        
     }
 
+    //Used to detect collision between the player and the enemy
     private void OnCollisionEnter2D(Collision2D collision) {
         if(collision.collider.name == "Enemy") {
+            //int 5 passed through into the take damage method
+            //5 damage is taken from the players health
             TakeDamage(5);
         }
     }
