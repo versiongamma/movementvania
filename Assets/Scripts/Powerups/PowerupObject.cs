@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Handles the powerup object in the level that the player picks up to aquire new powerups
 public class PowerupObject : MonoBehaviour {
 
+    // Represents the keys that respond to a specified powerup, to be displayed on the popup 
     enum Key {
         Jump,
         Dash,
@@ -40,6 +42,7 @@ public class PowerupObject : MonoBehaviour {
         }
     }
 
+    // Takes a given CanvasRenderer [tooltips] and fades it's opacity either in or out based on the [direction] (true = in, false = out), over a given [time]
     IEnumerator Fade(CanvasRenderer[] tooltips, float time, bool direction) {
         foreach (CanvasRenderer tooltip in tooltips) tooltip.SetAlpha(direction ? 0 : 1);
         float t = 0;

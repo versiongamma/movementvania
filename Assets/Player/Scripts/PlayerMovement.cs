@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Handles the controlling of the player character, and any accosiated functions that
+// result from moving the player, such as sound and animation
 public class PlayerMovement : MonoBehaviour {
 
-    // Attached Components
+    /** ATTACHED COMPONENTS **/
     private Rigidbody2D rb;
     private PlayerEquipment equip;
     [SerializeField] private CameraMovement cam;
@@ -18,7 +20,10 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private HookRenderer hookRenderer;
     [SerializeField] private HookIndicatorRenderer hookIndicatorRenderer;
 
-    // Movement variables
+    /** MOVEMENT VARIABLES **/
+    // These values effect the movement of the player, editing them will
+    // affect how they feel to control. Also has some initilisation of
+    // directionality variables used in certain movement abilities
     private float movementSpeed = 12;
     private float movementNormal = 0;
     private float jumpPower = 20;
@@ -27,7 +32,10 @@ public class PlayerMovement : MonoBehaviour {
     private Vector2 swingDirection = new Vector2(.5f, .5f);
     private Vector2 dashDirection = new Vector2(1f, 0f);
 
-    // States
+    //** STATES **//
+    // States can be used to determine what the player is currently doing,
+    // i.e. if they are on the ground, if they are currently swinging, 
+    // as functionality might change based on the player's current state
     private bool grounded;
     private bool usedDoubleJump;
     private bool usedDash;
@@ -59,8 +67,9 @@ public class PlayerMovement : MonoBehaviour {
         anim = sprite.GetComponent<PlayerAnimationController>();
         randInt = new System.Random();
     }
+
     void Update() {
-        // Grounding
+        // Grounding \\
         RaycastHit2D groundHitPos = Physics2D.Raycast(transform.position + new Vector3(.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
         RaycastHit2D groundHitNeg = Physics2D.Raycast(transform.position + new Vector3(-.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position+ new Vector3(.4f,0,0), -Vector2.up, Color.red);
@@ -78,6 +87,8 @@ public class PlayerMovement : MonoBehaviour {
 
         anim.UpdateGroundedState(grounded);
 
+        // Basic Movement \\
+
         float horizontalV = rb.velocity.x;
         float verticalV = rb.velocity.y;
 
@@ -88,7 +99,9 @@ public class PlayerMovement : MonoBehaviour {
             horizontalV = Mathf.Lerp(rb.velocity.x, targetHorizontalV, Mathf.Abs(rb.velocity.x) < Mathf.Abs(targetHorizontalV) ? 15f * Time.deltaTime : 30f * Time.deltaTime);
         } else {
             horizontalV = Mathf.Lerp(horizontalV, 0, Time.deltaTime);
-            if (inputController.getHorizontalAxis() != 0 && !keepAirLauncing) airLauncing = false;
+            // Cancel the air launching state if the player inputs movement, this lets them move straight out of an ability
+            // that sends them into the air launching state, so they don't have to wait for the natural decceleration
+            if (inputController.getHorizontalAxis() != 0 && !keepAirLauncing) airLauncing = false; 
         }
 
         // Handle footstep sound
@@ -111,7 +124,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         if (inputController.getHorizontalAxis()== 0) { footstepSound.Stop(); }
 
-        // Jump
+        // Jump \\
         if (
             inputController.isJumpActive() && 
             !sliding &&
@@ -125,16 +138,18 @@ public class PlayerMovement : MonoBehaviour {
                 anim.PlayDoubleJump();
                 usedDoubleJump = true;
                 jumpSound.pitch = 1.3f;
-            } else {
+            } else { // Jump animation is played here as otherwise the jump animation trigger is set when the player double jumps as well,
+                     // and is not cleared until they hit the ground
                 anim.PlayJump();
             }
         }
 
+        // Movement normal is the normalised movement vector, which can be used to get the direction that the player is travelling in.
         if (horizontalV != 0) movementNormal = Mathf.Clamp(horizontalV, -1, 1);
 
         dashDirection = new Vector2(inputController.getHorizontalAxis(), inputController.getVerticalAxis());
         
-        //Dash
+        //Dash \\
         if (
             inputController.isDashActive() && 
             !usedDash && 
@@ -143,10 +158,9 @@ public class PlayerMovement : MonoBehaviour {
             equip.GetPowerupState(PowerUps.Dash)
         ) {
             StartCoroutine(Dash(dashDirection));
-            dashSound.Play();
         }
 
-        // Wall Slide and Jump
+        // Wall Slide and Jump \\
         RaycastHit2D onWallLeft = Physics2D.Raycast(transform.position, -Vector2.right, .6f, LayerMask.GetMask("Geometry"));
         RaycastHit2D onWallRight = Physics2D.Raycast(transform.position, Vector2.right, .6f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, -Vector2.right * .6f, Color.blue);
@@ -163,33 +177,31 @@ public class PlayerMovement : MonoBehaviour {
                     airLauncing = true;
                     StartCoroutine(KeepAirLaunch(.1f));
 
-                    anim.PlayDoubleJump();
+                    anim.PlayDoubleJump(); // NOTE: If we add another animation for the wall jump, it will be played from here
                 }
             }
         } else sliding = false;
 
         anim.UpdateSliding(sliding);
 
-        // Swinging
-        if (!swinging)swingDirection = movementNormal > 0 ? new Vector2(.5f, .5f) : new Vector2(-.5f, .5f); 
+        // Swinging \\
+        if (!swinging)swingDirection = movementNormal > 0 ? new Vector2(.5f, .5f) : new Vector2(-.5f, .5f); // Swing direction is a vector rotated 45 degrees upwards from the current movement normal
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
         if (hit.collider != null && !grounded && !sliding) {
             hookIndicatorRenderer.Display(hit.point);
             if (inputController.isSwingDown()  && equip.GetPowerupState(PowerUps.Swing)) { 
-                anim.PlayStartSwing(hit.point);
                 StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
             }
         } else hookIndicatorRenderer.Remove();
 
-
-        verticalV = Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue);
+        verticalV = Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue); // Clamp the vertical velocity, otherwise it will increase forever, and makes the player fall way too fast
         rb.velocity = new Vector3(horizontalV, verticalV, 0);
         anim.UpdateVelocity(inputController.getHorizontalAxis(), verticalV);
 
 
-        // Save loading
+        // Save Loading \\
         if (SaveLoad.loaded)
         {
             Debug.Log("Moving player to loaded position!");
@@ -213,10 +225,14 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
+    // Coroutine that takes a given [direction] and perfoms the dash action in that direction
     IEnumerator Dash(Vector2 direction) {
+        if (colliding) yield break;
+
         float t = Time.deltaTime;
         Vector2 startPos = transform.position;
         dashParticles.Play();
+        dashSound.Play();
         cam.DashSmoothing();
 
         while (t < .1f) {
@@ -242,6 +258,7 @@ public class PlayerMovement : MonoBehaviour {
         yield break;
     }
 
+    // Maintains the air launching state for a given [time] period
     IEnumerator KeepAirLaunch(float time) {
         keepAirLauncing = true;
         yield return new WaitForSeconds(time);
@@ -249,17 +266,22 @@ public class PlayerMovement : MonoBehaviour {
         airLauncing = false;
     }
 
+    // Starts a swing with acceleration deadening and playing animations. Full swinging coroutine is started on completion 
     IEnumerator StartSwing(Vector2 point, bool direction) {
+        if (colliding) yield break;    
+
         rb.velocity = Vector3.zero;
         rb.gravityScale = 0;
 
         hookRenderer.Attach(point);
+        anim.PlayStartSwing(point);
 
         yield return new WaitForSeconds(.1f);
 
         StartCoroutine(SwingAroundPoint(point, direction));
     }
 
+    // Takes a [point] and a swing [direction] and will force the player through an arc that connects there position to the point.
     IEnumerator SwingAroundPoint(Vector2 point, bool direction) {
 
         swinging = true;
@@ -296,6 +318,7 @@ public class PlayerMovement : MonoBehaviour {
         yield break;
     }
 
+    // Forces the player to the collision state, interuptting any currently occuring movement abilities
     public void EndMovement() { colliding = true; }
 
     void OnCollisionEnter2D(Collision2D col) { colliding = true; }
