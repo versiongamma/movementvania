@@ -55,5 +55,10 @@ public class PlayerHealth : MonoBehaviour
             TakeDamage(5);
             Knockback(collision);
         }
+
+        if (collision.collider.name == "FollowingEnemy")
+        {
+            TakeDamage(10);
+        }
     }
 }
