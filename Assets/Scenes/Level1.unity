@@ -48799,7 +48799,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 859b60c4ce92db940adaf3a8a1314a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerActive: 0
 --- !u!114 &3364871495671668419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48821,6 +48820,7 @@ MonoBehaviour:
   footstepSound: {fileID: 3960041454986429359}
   inputController: {fileID: 2842221615574696325}
   sprite: {fileID: 1654796667}
+  startTime: 0
 --- !u!1 &3384614508537060452
 GameObject:
   m_ObjectHideFlags: 0
