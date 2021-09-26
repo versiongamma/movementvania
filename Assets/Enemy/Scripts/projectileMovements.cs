@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class projectileMovements : MonoBehaviour
 {
-    public float speed = 0.5f;
+    public float speed;
 
     private Transform player;
     private Vector2 target;
-    private GameObject projectile;
+    public GameObject Projectile;
 
     // Start is called before the first frame update
     void Start(){
@@ -22,15 +22,15 @@ public class projectileMovements : MonoBehaviour
 
         if(transform.position.x == target.x && transform.position.y == target.y)
         {
-            Destroy(projectile);
+            Destroy(Projectile);
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.collider.name == "Player")
         {
-            Destroy(projectile);
+            Destroy(Projectile);
         }
     }
 }
