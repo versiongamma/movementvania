@@ -8,9 +8,15 @@ public class EnemyMovements : MonoBehaviour
     public float speed = 2f;
     private Vector2 startPosition;
 
+    private float timeBetweenProjectiles;
+    public float startTimeProjectiles;
+    public GameObject projectile;
+    
+
     private void Start(){
         //startPosition is set equal to transform position to track the enemy
         startPosition = transform.position;
+        timeBetweenProjectiles = startTimeProjectiles;
     }
 
     // Update is called once per frame
@@ -20,5 +26,14 @@ public class EnemyMovements : MonoBehaviour
         Vector2 v = startPosition;
         v.x += direction * Mathf.Sin(Time.time * speed);
         transform.position = v;
+
+        //for projectiles
+        if (timeBetweenProjectiles <= 0){
+            Instantiate(projectile, transform.position, Quaternion.identity);
+            timeBetweenProjectiles = startTimeProjectiles;
+        }
+        else{
+            timeBetweenProjectiles -= Time.deltaTime;
+        }
     }
 }
