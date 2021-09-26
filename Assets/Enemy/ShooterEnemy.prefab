@@ -177,5 +177,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   speed: 0
-  startTimeProjectiles: 0
+  startTimeProjectiles: 8
   projectile: {fileID: 837925615364917147, guid: 6a53a6241025f4d4e9a66095fa821853, type: 3}

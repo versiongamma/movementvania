@@ -44,11 +44,19 @@ public class PlayerHealth : MonoBehaviour
 
     // If the player collides with enemy calls damage function
     private void OnCollisionEnter2D(Collision2D collision) {
+        //loop for damage taken from a basic enemy
         if(collision.collider.name == "Enemy") {
             TakeDamage(5);
         }
 
+        //loop for damage taken from a following enemy
         if (collision.collider.name == "FollowingEnemy")
+        {
+            TakeDamage(10);
+        }
+
+        //loop for damage taken from a projectile
+        if (collision.collider.name == "Projectile")
         {
             TakeDamage(10);
         }
