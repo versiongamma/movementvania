@@ -258,7 +258,10 @@ public class PlayerMovement : MonoBehaviour {
             
             Vector2 nextPosition = Vector2.Lerp(startPos, startPos + (direction * 7), t * 20);
             RaycastHit2D collide = Physics2D.Raycast(transform.position, direction, Vector2.Distance(transform.position, nextPosition), LayerMask.GetMask("Geometry"));
-            if (colliding) break;
+            if (colliding) {
+                dashSound.Stop(); 
+                break;
+            }
             if (collide.collider != null) { 
                 transform.position = collide.point;
                 break;
@@ -268,6 +271,7 @@ public class PlayerMovement : MonoBehaviour {
             t += Time.deltaTime;
             yield return 0;
         }
+        
         
         usedDash = true;
         rb.gravityScale = 4.7f;
