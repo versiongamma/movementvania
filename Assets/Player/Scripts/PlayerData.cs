@@ -15,11 +15,16 @@ public class PlayerData : MonoBehaviour
     public bool translateX;
     public bool translateY;
     public string activeSceneName;
+    public string saveFileName;
 
     /*
      * Retrives relevant data from different objects in order to populate ourselves with data to be saved
      */
-    public void popluateData() {
+    public void popluateData(string fileName) {
+        Debug.Log("Saving game...");
+        if (fileName == null)
+            fileName = "SaveData";
+        this.saveFileName = fileName;
         GameObject player = GameObject.Find("Player");
         if (player == null)
             // Error here!

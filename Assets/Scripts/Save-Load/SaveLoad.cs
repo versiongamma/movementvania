@@ -49,7 +49,7 @@ public static class SaveLoad
         save.translateX = pd.translateX;
         save.translateY = pd.translateY;
         // Writes save data to the 'AppData' folder on Windows, not sure about MacOS
-        string savePath = Application.persistentDataPath + "/SaveData.bin";
+        string savePath = Application.persistentDataPath + "/" + pd.saveFileName + ".bin";
         // Convert SaveData object to JSON data for writing
         string jsonData = JsonUtility.ToJson(save, true);
         File.WriteAllText(savePath, jsonData);

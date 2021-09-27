@@ -59,6 +59,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private GameObject sprite;
     private PlayerAnimationController anim;
 
+    public long startTime;
+    public int lastMinuteSaved = 0;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -66,6 +68,7 @@ public class PlayerMovement : MonoBehaviour {
         inputController = GetComponent<InputController>();
         anim = sprite.GetComponent<PlayerAnimationController>();
         randInt = new System.Random();
+        startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
     void Update() {
@@ -223,6 +226,20 @@ public class PlayerMovement : MonoBehaviour {
             SaveLoad.loaded = false;
             
         }
+        // Autosave checks
+        long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        int minuteSinceStart = (int) Math.Floor((double)((currentTime - startTime) / 60000));
+        // Game will auto-save once every 5 minutes (can be changed)
+        if (minuteSinceStart % 5 == 0 && 
+            /* Ensure we don't save as soon as the game loads */
+            minuteSinceStart > 0 && 
+            /* Ensure that we only save once per 5 minutes, not every frame at the 5 minute mark */
+            minuteSinceStart != lastMinuteSaved) 
+        {
+            lastMinuteSaved = minuteSinceStart;
+            // Call save function
+            new PlayerData().popluateData("AutoSaveData");
+        }
     }
 
     // Coroutine that takes a given [direction] and perfoms the dash action in that direction
@@ -244,7 +261,7 @@ public class PlayerMovement : MonoBehaviour {
             if (colliding) break;
             if (collide.collider != null) { 
                 transform.position = collide.point;
-                break; 
+                break;
             }
             transform.position = nextPosition;
 
@@ -332,5 +349,9 @@ public class PlayerMovement : MonoBehaviour {
     public PlayerEquipment getPlayerEquipment() 
     {
         return this.equip;
+    }
+    public long getStartTime() 
+    {
+        return this.startTime;
     }
 }
