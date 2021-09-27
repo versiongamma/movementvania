@@ -11,7 +11,7 @@ public class EnemyMovements : MonoBehaviour
     private float timeBetweenProjectiles;
     public float startTimeProjectiles;
     public GameObject projectile;
-    
+
 
     private void Start(){
         //startPosition is set equal to transform position to track the enemy
@@ -29,7 +29,7 @@ public class EnemyMovements : MonoBehaviour
 
         //for projectiles
         if (timeBetweenProjectiles <= 0){
-            Instantiate(projectile, transform.position, Quaternion.identity);
+            Instantiate(projectile, transform.position, Quaternion.identity); //initiates the projectile to spawn
             timeBetweenProjectiles = startTimeProjectiles;
         }
         else{
