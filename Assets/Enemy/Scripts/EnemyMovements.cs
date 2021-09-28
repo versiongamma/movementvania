@@ -4,36 +4,44 @@ using UnityEngine;
 
 public class EnemyMovements : MonoBehaviour
 {
-    public float direction = 1.5f;
-    public float speed = 2f;
+    public float direction;
+    public float speed;
     private Vector2 startPosition;
-
-    private float timeBetweenProjectiles;
-    public float startTimeProjectiles;
-    public GameObject projectile;
+    private Rigidbody2D rb;
 
 
     private void Start(){
-        //startPosition is set equal to transform position to track the enemy
-        startPosition = transform.position;
-        timeBetweenProjectiles = startTimeProjectiles;
+
+        //enemy movements
+        rb = GetComponent<Rigidbody2D>();
+        direction = -1f;
+        speed = 3f;
     }
 
     // Update is called once per frame
     void Update(){
+    }
 
-        //Vector2 is used to set the enemy movement from left to right
-        Vector2 v = startPosition;
-        v.x += direction * Mathf.Sin(Time.time * speed);
-        transform.position = v;
+    private void OnCollisionEnter2D(Collision2D collision){
+        if(collision.gameObject.tag == "RightWall"){
+            direction *= -1f;
+            Debug.Log("Collision with right wall!");
+        }
 
-        //for projectiles
-        if (timeBetweenProjectiles <= 0){
-            Instantiate(projectile, transform.position, Quaternion.identity); //initiates the projectile to spawn
-            timeBetweenProjectiles = startTimeProjectiles;
+        if (collision.gameObject.tag == "LeftWall")
+        {
+            direction *= -1f;
+            Debug.Log("Collision with left wall!");
         }
-        else{
-            timeBetweenProjectiles -= Time.deltaTime;
+        if (collision.gameObject.tag == "Door")
+        {
+            direction *= -1f;
+            Debug.Log("Collision with door 2!!");
         }
+    }
+
+    void FixedUpdate()
+    {
+        rb.velocity = new Vector2(direction * speed, rb.velocity.y);
     }
 }
