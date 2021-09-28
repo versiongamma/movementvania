@@ -17402,6 +17402,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8069823840208318693, guid: 2a4440b81cbe90543986c8bdaad11d13, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 8707901698477544689}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a4440b81cbe90543986c8bdaad11d13, type: 3}
 --- !u!1 &441673859
@@ -54634,7 +54638,8 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   healthBar: {fileID: 458571709}
-  Player: {fileID: 0}
+  Player: {fileID: 8707901698477544689}
+  rb2D: {fileID: 8707901698477544692}
 --- !u!1 &8707901698477544689
 GameObject:
   m_ObjectHideFlags: 0
