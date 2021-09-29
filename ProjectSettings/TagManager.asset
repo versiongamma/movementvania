@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RightWall
   - LeftWall
+  - Door
   layers:
   - Default
   - TransparentFX
