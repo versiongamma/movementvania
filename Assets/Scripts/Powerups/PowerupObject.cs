@@ -31,7 +31,7 @@ public class PowerupObject : MonoBehaviour {
         if (other.gameObject.name == "Player") {
 
             other.gameObject.GetComponent<PlayerEquipment>().GivePowerup(powerup);
-            canvas.transform.position = (Vector2) cam.transform.position + new Vector2(0, -5);
+            canvas.transform.position = (Vector2) cam.transform.position + new Vector2(0, 0);
             
             sound.Play();
             StartCoroutine(ShowTooltip(canvas));

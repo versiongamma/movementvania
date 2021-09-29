@@ -22,9 +22,11 @@ public class DoorHandler : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        player.GetComponent<PlayerMovement>().EndMovement();
-        float playerTranslateX = doorSide == Side.Left ? -travelDistance : doorSide == Side.Right ? travelDistance : 0;
-        player.transform.position += new Vector3(playerTranslateX, 0, 0);
-        boundsHandler.SetCameraBounds(mainCamera);
+        if (other.gameObject.name == "Player") {
+            player.GetComponent<PlayerMovement>().EndMovement();
+            float playerTranslateX = doorSide == Side.Left ? -travelDistance : doorSide == Side.Right ? travelDistance : 0;
+            player.transform.position += new Vector3(playerTranslateX, 0, 0);
+            boundsHandler.SetCameraBounds(mainCamera);
+        }
     }
 }
