@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
     //Class Variables
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private bool gameIsPaused;
+    [SerializeField] private AudioListener audioListener;
 
     // Update is called once per frame
    private void Update(){
@@ -27,12 +28,15 @@ public class PauseMenu : MonoBehaviour
     public void GamePaused(){
         Time.timeScale = 0;   //time scale set to zero to 'freeze' the game
         pauseMenuUI.SetActive(true); //pauseMenuUI become visible to the player
+        AudioListener.pause = true;
+        AudioListener.pause = true;
     }
 
     //function for when the game is to be resumed from the pause menu
     public void ResumeGame(){
         Time.timeScale = 1;  //Time is resumed
         pauseMenuUI.SetActive(false); //pauseMenuUI is made non visible
+        AudioListener.pause = false;
     }
 
     //setter
