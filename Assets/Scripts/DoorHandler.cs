@@ -16,7 +16,7 @@ public class DoorHandler : MonoBehaviour {
     private CameraMovement camMove;
     private CameraBoundsHandler boundsHandler;
 
-    void Start() { 
+    void Start() {
         boundsHandler = newCameraBounds.GetComponent<CameraBoundsHandler>();
         player = GameObject.Find("Player");
     }

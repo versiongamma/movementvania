@@ -68,5 +68,10 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(10);
         }
+
+        if (collision.collider.name == "Jumper")
+        {
+            TakeDamage(10);
+        }
     }
 }
