@@ -48,7 +48,6 @@ public class UI_Inventory : MonoBehaviour
                 x = 0;
                 y--;
             }
-            Debug.Log("Refreshing inventory item " + powerupName);
         }
     }
 }

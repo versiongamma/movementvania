@@ -4,38 +4,34 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Handles the powerup object in the level that the player picks up to aquire new powerups
-public class PowerupObject : MonoBehaviour {
 
-    // Represents the keys that respond to a specified powerup, to be displayed on the popup 
-    enum Key {
-        Jump,
-        Dash,
-    }
+// Represents the keys that respond to a specified powerup, to be displayed on the popup 
+public enum Key {
+    Jump,
+    Dash,
+    Swing,
+}
+
+public class PowerupObject : MonoBehaviour {
 
     [SerializeField] private GameObject canvas, cam;
     [SerializeField] public Text powerupNameUI, actionUI, keyUI, resultUI;
+    [SerializeField] public Image keyImgUI;
     [SerializeField] public string powerupName, action, result;  
     [SerializeField] private PowerUps powerup; 
     [SerializeField] private Key key;
-    private KeyCode keyString;
-
 
     private AudioSource sound;
 
     void Start() {
         sound = GetComponent<AudioSource>();
-
-        switch(key) {
-            case Key.Jump:
-                keyString = InputController.jump;
-                break;
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.name == "Player") {
+
             other.gameObject.GetComponent<PlayerEquipment>().GivePowerup(powerup);
-            canvas.transform.position = (Vector2) cam.transform.position + new Vector2(0, -5);
+            canvas.transform.position = (Vector2) cam.transform.position + new Vector2(0, 0);
             
             sound.Play();
             StartCoroutine(ShowTooltip(canvas));
@@ -60,7 +56,7 @@ public class PowerupObject : MonoBehaviour {
             
             powerupNameUI.text = powerupName;
             actionUI.text = action;
-            keyUI.text = "x";
+            DisplayKeyCode.Display(keyUI, keyImgUI, key);
             resultUI.text = result;
 
             canvas.SetActive(true);
