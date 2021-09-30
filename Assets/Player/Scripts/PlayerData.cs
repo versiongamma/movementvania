@@ -16,6 +16,7 @@ public class PlayerData : MonoBehaviour
     public bool translateY;
     public string activeSceneName;
     public string saveFileName;
+    public Dictionary<string, string[]> minimapExplored;
 
     /*
      * Retrives relevant data from different objects in order to populate ourselves with data to be saved
@@ -41,7 +42,8 @@ public class PlayerData : MonoBehaviour
         // Get information on whether or not the camera can move in the X or Y direction, as the player moves
         this.translateX = GameObject.Find("Main Camera").GetComponent<CameraMovement>().getCameraTranslateX();
         this.translateY = GameObject.Find("Main Camera").GetComponent<CameraMovement>().getCameraTranslateY();
-
+        // Get dictionary of explored rooms in the level
+        this.minimapExplored = player.GetComponent<PlayerMovement>().getExploredRoomsWithSceneName();
         if (this.playerPosition != null && this.playerHealth != null && this.playerPowerups != null) // Ensure that we don't attempt to save NULL data
         {
             // Call the save function
@@ -61,6 +63,7 @@ public class PlayerData : MonoBehaviour
         this.playerPowerups = SaveLoad.powerups;
         this.activeSceneName = SaveLoad.activeSceneName;
         this.cameraMinMax = SaveLoad.cameraMinMax;
+        this.minimapExplored = SaveLoad.minimapExplored;
         GameObject pauseMenu = GameObject.Find("PauseMenu");
         if (pauseMenu == null) {
             // If pauseMenu is NULL we are loading from the start menu so we will need to load the given scene

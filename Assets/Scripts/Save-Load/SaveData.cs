@@ -14,4 +14,7 @@ public class SaveData
     public bool translateY;
     public int health;
     public bool[] powerups;
+    public string[] minimapExploredSceneName;
+    public int[] minimapExploredIndex;
+    public string[] minimapExplored;
 }
