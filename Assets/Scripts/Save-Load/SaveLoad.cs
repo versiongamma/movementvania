@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +18,7 @@ public static class SaveLoad
     public static bool translateY;
     public static int health;
     public static bool[] powerups;
+    public static Dictionary<string, string[]> minimapExplored;
 
     /*
      * Write given PlayerData data to disk for loading at a later time
@@ -48,6 +51,30 @@ public static class SaveLoad
 
         save.translateX = pd.translateX;
         save.translateY = pd.translateY;
+
+        int arrayLength = 0;
+
+        for (int i = 0; i < pd.minimapExplored.Values.Count; i++) 
+        {
+            for (int k = 0; k < pd.minimapExplored.Values.ElementAt(i).Count(); k++) 
+            {
+                arrayLength++;
+            }
+        }
+
+        save.minimapExploredSceneName = pd.minimapExplored.Keys.ToArray<string>();
+        save.minimapExplored = new string[arrayLength];
+        save.minimapExploredIndex = new int[arrayLength];
+
+        for (int i = 0; i < pd.minimapExplored.Keys.Count; i++) 
+        {
+            for (int k = 0; k < pd.minimapExplored.Values.ElementAt(i).Count(); k++) 
+            {
+                save.minimapExploredIndex[k] = Array.IndexOf(save.minimapExploredSceneName, pd.minimapExplored.Keys.ElementAt(i));
+                save.minimapExplored[k] = pd.minimapExplored.Values.ElementAt(i)[k];
+            }
+        }
+
         // Writes save data to the 'AppData' folder on Windows, not sure about MacOS
         string savePath = Application.persistentDataPath + "/" + pd.saveFileName + ".bin";
         // Convert SaveData object to JSON data for writing
@@ -88,6 +115,21 @@ public static class SaveLoad
 
         powerups = save.powerups;
 
+        minimapExplored = new Dictionary<string, string[]>();
+        for (int k = 0; k < save.minimapExploredSceneName.Count(); k++) 
+        {
+            int arrayLength = 0;
+            for (int i = 0; i < save.minimapExplored[k].Count(); i++) 
+            {
+                arrayLength++;
+            }
+            string[] tempArray = new string[arrayLength];
+            for (int i = 0; i < save.minimapExplored.Count(); i++) 
+            {
+                tempArray[i] = save.minimapExplored.ElementAt(i);
+            }
+            minimapExplored.Add(save.minimapExploredSceneName.ElementAt(k), tempArray);
+        }
         loaded = true;
     }
     /*

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -61,6 +62,9 @@ public class PlayerMovement : MonoBehaviour {
 
     public long startTime;
     public int lastMinuteSaved = 0;
+    public ArrayList rooms;
+    public ArrayList minimapExploredList;
+    static public Dictionary<string, string[]> minimapExplored;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -69,9 +73,37 @@ public class PlayerMovement : MonoBehaviour {
         anim = sprite.GetComponent<PlayerAnimationController>();
         randInt = new System.Random();
         startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        rooms = new ArrayList();
+        minimapExploredList = new ArrayList();
+        int i = 1;
+        while (true) {
+            GameObject temp = GameObject.Find("Room0" + i);
+            if (!temp)
+                break;
+            rooms.Add(temp);
+            i++;
+        }
     }
 
     void Update() {
+
+        // Minimap fog of war checks \\
+        for (int i = 0; i < rooms.Count; i++) {
+            GameObject temp = (GameObject) rooms[i];
+            GameObject tempRoom = (GameObject) GameObject.Find("MinimapUnexplored" + temp.name);
+            GameObject tempCeiling = GameObject.Find(temp.name + "/Room Bound/Ceiling");
+            GameObject tempFloor = GameObject.Find(temp.name + "/Room Bound/Floor");
+            GameObject tempLeft = GameObject.Find(temp.name + "/Room Bound/Left Wall");
+            GameObject tempRight = GameObject.Find(temp.name + "/Room Bound/Right Wall");
+            if (tempRoom && 
+                checkPlayerRoom(transform.position, tempCeiling.transform.position, tempFloor.transform.position, tempLeft.transform.position, tempRight.transform.position) && 
+                tempRoom.active == true) 
+            { 
+                tempRoom.active = false;
+                minimapExploredList.Add(tempRoom.name);
+            }
+        }
+
         // Grounding \\
         RaycastHit2D groundHitPos = Physics2D.Raycast(transform.position + new Vector3(.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
         RaycastHit2D groundHitNeg = Physics2D.Raycast(transform.position + new Vector3(-.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
@@ -222,6 +254,18 @@ public class PlayerMovement : MonoBehaviour {
 
             equip.setPowerUps(SaveLoad.powerups);
 
+            for (int i = 0; i < SaveLoad.minimapExplored.Keys.Count(); i++) 
+            {
+                if (String.Equals(SaveLoad.minimapExplored.ElementAt(i).Key, SceneManager.GetActiveScene().name)) 
+                {
+                    for (int k = 0; k <SaveLoad.minimapExplored.ElementAt(i).Value.Count(); k++) {
+                        GameObject tempRoom = (GameObject) GameObject.Find(SaveLoad.minimapExplored.ElementAt(i).Value[k]);
+                        if (tempRoom)
+                            tempRoom.active = false;
+                    }
+                }
+            }
+            minimapExplored = SaveLoad.minimapExplored;
             SaveLoad.clear();
             SaveLoad.loaded = false;
             
@@ -240,6 +284,13 @@ public class PlayerMovement : MonoBehaviour {
             // Call save function
             new PlayerData().popluateData("AutoSaveData");
         }
+    }
+
+    public Boolean checkPlayerRoom(Vector3 playerPos, Vector3 roomCeiling, Vector3 roomFloor, Vector3 roomLeft, Vector3 roomRight) {
+        if ((playerPos.x <= roomRight.x && playerPos.x >= roomLeft.x) && (playerPos.y <= roomCeiling.y && playerPos.y >= roomFloor.y)) {
+            return true;
+        }
+        return false;
     }
 
     // Coroutine that takes a given [direction] and perfoms the dash action in that direction
@@ -357,5 +408,30 @@ public class PlayerMovement : MonoBehaviour {
     public long getStartTime() 
     {
         return this.startTime;
+    }
+    public ArrayList getExploredRooms() 
+    {
+        return this.minimapExploredList;
+    }
+    public Dictionary<string, string[]> getExploredRoomsWithSceneName() 
+    { 
+        if (minimapExplored != null)
+            return minimapExplored;
+        var retDict= new Dictionary<string, string[]>();
+        for (int i = 0; i < getExploredRooms().Count; i++) 
+        {
+            ArrayList currentArray;
+            if (retDict.ContainsKey(SceneManager.GetActiveScene().name))
+                currentArray = new ArrayList(retDict[SceneManager.GetActiveScene().name]);
+            else
+                currentArray = new ArrayList();
+            currentArray.Add((string) getExploredRooms().ToArray()[i]);
+            string[] tempArray = ((IEnumerable)currentArray).Cast<object>()
+                                 .Select(currentArray => currentArray.ToString())
+                                 .ToArray();
+            retDict.Remove(SceneManager.GetActiveScene().name);
+            retDict.Add(SceneManager.GetActiveScene().name, tempArray);
+        }
+        return retDict;
     }
 }
