@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour {
         minimapExploredList = new ArrayList();
         int i = 1;
         while (true) {
-            GameObject temp = GameObject.Find("Room0" + i);
+            GameObject temp = GameObject.Find("Room" + (i < 10 ? ("0" + i.ToString()) : i.ToString()));
             if (!temp)
                 break;
             rooms.Add(temp);
@@ -96,10 +96,15 @@ public class PlayerMovement : MonoBehaviour {
             GameObject tempLeft = GameObject.Find(temp.name + "/Room Bound/Left Wall");
             GameObject tempRight = GameObject.Find(temp.name + "/Room Bound/Right Wall");
             if (tempRoom && 
-                checkPlayerRoom(transform.position, tempCeiling.transform.position, tempFloor.transform.position, tempLeft.transform.position, tempRight.transform.position) && 
-                tempRoom.active == true) 
+                checkPlayerRoom(transform.position, tempCeiling.transform.position, tempFloor.transform.position, tempLeft.transform.position, tempRight.transform.position)) 
             { 
-                tempRoom.active = false;
+                Color newColour = tempRoom.GetComponent<SpriteRenderer>().color;
+                newColour.a = 255;
+                tempRoom.GetComponent<SpriteRenderer>().color = newColour;
+
+                newColour = tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color;
+                newColour.a = 255;
+                tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color = newColour;
                 minimapExploredList.Add(tempRoom.name);
             }
         }
