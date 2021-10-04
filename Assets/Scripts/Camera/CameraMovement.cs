@@ -17,7 +17,7 @@ public class CameraMovement : MonoBehaviour {
     
     void Update() {
         if (translateX) { newX = player.transform.position.x; }
-        if (translateY) { newY = player.transform.position.y + 6; }
+        if (translateY) { newY = player.transform.position.y + 3; }
 
         // Terniaries make sure that the max clamp is greater than the min clamp, otherwise it freaks out.
         // This should only ever happen in single screen rooms, when the bounds are smaller than the camera's width or height

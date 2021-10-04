@@ -44,7 +44,7 @@ public class PlayerData : MonoBehaviour
         this.translateY = GameObject.Find("Main Camera").GetComponent<CameraMovement>().getCameraTranslateY();
         // Get dictionary of explored rooms in the level
         this.minimapExplored = player.GetComponent<PlayerMovement>().getExploredRoomsWithSceneName();
-        if (this.playerPosition != null && this.playerHealth != null && this.playerPowerups != null) // Ensure that we don't attempt to save NULL data
+        if (this.playerPosition != null && this.playerPowerups != null) // Ensure that we don't attempt to save NULL data
         {
             // Call the save function
             SaveLoad.saveData(this);
