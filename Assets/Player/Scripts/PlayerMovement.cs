@@ -51,6 +51,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
+    [SerializeField] private AudioSource grappleShotSound;
+    [SerializeField] private AudioSource grappleHookSound;
     private System.Random randInt;
 
     [Header("Input")]
@@ -347,6 +349,7 @@ public class PlayerMovement : MonoBehaviour {
 
         hookRenderer.Attach(point);
         anim.PlayStartSwing(point);
+        grappleShotSound.Play();
 
         yield return new WaitForSeconds(.1f);
 
@@ -355,6 +358,10 @@ public class PlayerMovement : MonoBehaviour {
 
     // Takes a [point] and a swing [direction] and will force the player through an arc that connects there position to the point.
     IEnumerator SwingAroundPoint(Vector2 point, bool direction) {
+
+        //sfx
+        grappleHookSound.Play();
+        if (grappleShotSound.isPlaying) { grappleShotSound.Stop(); }
 
         swinging = true;
         Vector3 startPos = transform.position;
