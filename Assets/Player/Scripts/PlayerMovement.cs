@@ -107,7 +107,8 @@ public class PlayerMovement : MonoBehaviour {
                 newColour = tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color;
                 newColour.a = 255;
                 tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color = newColour;
-                minimapExploredList.Add(tempRoom.name);
+                if (!minimapExploredList.Contains(tempRoom.name))
+                    minimapExploredList.Add(tempRoom.name);
             }
         }
 
@@ -267,8 +268,15 @@ public class PlayerMovement : MonoBehaviour {
                 {
                     for (int k = 0; k <SaveLoad.minimapExplored.ElementAt(i).Value.Count(); k++) {
                         GameObject tempRoom = (GameObject) GameObject.Find(SaveLoad.minimapExplored.ElementAt(i).Value[k]);
-                        if (tempRoom)
-                            tempRoom.active = false;
+                        if (tempRoom) {
+                            Color newColour = tempRoom.GetComponent<SpriteRenderer>().color;
+                            newColour.a = 255;
+                            tempRoom.GetComponent<SpriteRenderer>().color = newColour;
+
+                            newColour = tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color;
+                            newColour.a = 255;
+                            tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color = newColour;
+                        }
                     }
                 }
             }
