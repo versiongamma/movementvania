@@ -86,11 +86,11 @@ public static class SaveLoad
     /*
      * Load data from a JSON file on disk and populate ourselves with said data
      */
-    public static void loadData() 
+    public static void loadData(String filename = "SaveData") 
     {
         clear();
 
-        SaveData save = JsonUtility.FromJson<SaveData>(File.ReadAllText(Application.persistentDataPath + "/SaveData.bin"));
+        SaveData save = JsonUtility.FromJson<SaveData>(File.ReadAllText(Application.persistentDataPath + "/" + filename + ".bin"));
 
         activeSceneName = save.activeSceneName;
         position = new float[2];

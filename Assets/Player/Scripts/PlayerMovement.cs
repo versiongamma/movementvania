@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,6 +68,8 @@ public class PlayerMovement : MonoBehaviour {
     public ArrayList rooms;
     public ArrayList minimapExploredList;
     static public Dictionary<string, string[]> minimapExplored;
+    public PauseMenu pm;
+    public bool test = false;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -85,9 +88,31 @@ public class PlayerMovement : MonoBehaviour {
             rooms.Add(temp);
             i++;
         }
+        pm = GameObject.FindObjectOfType(typeof(PauseMenu)) as PauseMenu;
+        bool check = false;
+        if (pm.getPaused()) {
+            check = true;
+        }
+        try {
+            if (System.IO.File.Exists(Application.persistentDataPath + "/TempSaveData.bin") && check) 
+            {
+                SaveLoad.loadData("TempSaveData");
+                // Ensure we delete the TempSaveData.bin file after loading
+                File.Delete(Application.persistentDataPath + "/TempSaveData.bin");
+                test = true;
+            }
+        } catch (Exception e) {
+            // Ignore the exception
+        }
     }
 
     void Update() {
+
+        if (test) 
+        {
+            pm.setExternalPause(true);
+            test = false;
+        }
 
         // Minimap fog of war checks \\
         for (int i = 0; i < rooms.Count; i++) {
@@ -242,8 +267,6 @@ public class PlayerMovement : MonoBehaviour {
         verticalV = Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue); // Clamp the vertical velocity, otherwise it will increase forever, and makes the player fall way too fast
         rb.velocity = new Vector3(horizontalV, verticalV, 0);
         anim.UpdateVelocity(inputController.getHorizontalAxis(), verticalV);
-
-
         // Save Loading \\
         if (SaveLoad.loaded)
         {
@@ -283,6 +306,8 @@ public class PlayerMovement : MonoBehaviour {
             minimapExplored = SaveLoad.minimapExplored;
             SaveLoad.clear();
             SaveLoad.loaded = false;
+            pm.setPaused(false);
+            pm.ResumeGame();
             
         }
         // Autosave checks
