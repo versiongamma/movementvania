@@ -1487,7 +1487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472cbda6d2cfea346bcbf57e4af71f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
+  mixer: {fileID: 24100000, guid: 33917e3267478fe4c84c9322f220e516, type: 2}
+  slider: {fileID: 822654917}
 --- !u!114 &822654917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1532,10 +1533,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 396392014}
   m_HandleRect: {fileID: 2052437546}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
