@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour {
     public ArrayList minimapExploredList;
     static public Dictionary<string, string[]> minimapExplored;
     public PauseMenu pm;
-    public bool test = false;
+    public bool showPauseMenu = false;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour {
                 SaveLoad.loadData("TempSaveData");
                 // Ensure we delete the TempSaveData.bin file after loading
                 File.Delete(Application.persistentDataPath + "/TempSaveData.bin");
-                test = true;
+                showPauseMenu = true;
             }
         } catch (Exception e) {
             // Ignore the exception
@@ -108,10 +108,10 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update() {
 
-        if (test) 
+        if (showPauseMenu) 
         {
             pm.setExternalPause(true);
-            test = false;
+            showPauseMenu = false;
         }
 
         // Minimap fog of war checks \\
