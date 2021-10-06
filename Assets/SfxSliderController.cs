@@ -19,5 +19,6 @@ public class SfxSliderController : MonoBehaviour
     public void SetLevel(float SliderValue)
     {
         mixer.SetFloat("SfxVolume", Mathf.Log10(SliderValue) * 20);
+        PlayerPrefs.SetFloat("SfxVolume", slider.value);
     }
 }
