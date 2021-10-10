@@ -104,6 +104,7 @@ public class PlayerMovement : MonoBehaviour {
         } catch (Exception e) {
             // Ignore the exception
         }
+        StartCoroutine("FadeFromBlack");
     }
 
     void Update() {
@@ -112,6 +113,38 @@ public class PlayerMovement : MonoBehaviour {
         {
             pm.setExternalPause(true);
             showPauseMenu = false;
+        }
+
+        if (System.IO.File.Exists(Application.persistentDataPath + "/" + SceneManager.GetActiveScene().name + ".bin")) 
+        {
+
+            new PlayerData().loadPlayerDataLevelChange(SceneManager.GetActiveScene().name);
+            
+            equip.setPowerUps(SaveLoad.powerups);
+
+            for (int i = 0; i < SaveLoad.minimapExplored.Keys.Count(); i++) 
+            {
+                if (String.Equals(SaveLoad.minimapExplored.ElementAt(i).Key, SceneManager.GetActiveScene().name)) 
+                {
+                    for (int k = 0; k <SaveLoad.minimapExplored.ElementAt(i).Value.Count(); k++) {
+                        GameObject tempRoom = (GameObject) GameObject.Find(SaveLoad.minimapExplored.ElementAt(i).Value[k]);
+                        if (tempRoom) {
+                            Color newColour = tempRoom.GetComponent<SpriteRenderer>().color;
+                            newColour.a = 255;
+                            tempRoom.GetComponent<SpriteRenderer>().color = newColour;
+
+                            newColour = tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color;
+                            newColour.a = 255;
+                            tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color = newColour;
+                        }
+                    }
+                }
+            }
+            minimapExplored = SaveLoad.minimapExplored;
+            SaveLoad.clear();
+            SaveLoad.loaded = false;
+
+            File.Delete(Application.persistentDataPath + "/" + SceneManager.GetActiveScene().name + ".bin");
         }
 
         // Minimap fog of war checks \\
@@ -433,6 +466,25 @@ public class PlayerMovement : MonoBehaviour {
         hookRenderer.Dettach();
         anim.PlayStopSwing();
         yield break;
+    }
+
+    IEnumerator FadeFromBlack() 
+    {
+        GameObject fadeToBlackBox = GameObject.Find("Level_Transition");
+        if (fadeToBlackBox) {
+            fadeToBlackBox.SetActive(true);
+            for (float alphaValue = 1.2f; alphaValue >= 0f; alphaValue = alphaValue - 0.1f) 
+            {
+                SpriteRenderer r = fadeToBlackBox.GetComponent<SpriteRenderer>();
+                Color newColor = r.color;
+                newColor.a = alphaValue;
+                newColor.r = 0;
+                newColor.g = 0;
+                newColor.b = 0;
+                r.color = newColor;
+                yield return new WaitForSeconds(.05f);
+            }
+        }
     }
 
     // Forces the player to the collision state, interuptting any currently occuring movement abilities
