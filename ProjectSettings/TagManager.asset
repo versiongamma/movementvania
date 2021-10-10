@@ -7,6 +7,7 @@ TagManager:
   - RightWall
   - LeftWall
   - Door
+  - Movespots
   layers:
   - Default
   - TransparentFX

@@ -65,5 +65,15 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(10);
         }
+
+        if (collision.collider.name == "Dropper")
+        {
+            TakeDamage(10);
+        }
+
+        if (collision.collider.name == "Patroller")
+        {
+            TakeDamage(10);
+        }
     }
 }
