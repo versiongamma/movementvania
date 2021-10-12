@@ -11,6 +11,8 @@ public class PlayerHealth : MonoBehaviour
     public HealthBar healthBar;
     public GameObject Player;
     public Rigidbody2D rb2D;
+    public GameObject Dropper;
+    public Transform RespawnPoint;
 
     //Damage sfx
     [SerializeField] private AudioSource damageSound;
@@ -74,6 +76,34 @@ public class PlayerHealth : MonoBehaviour
         }
 
         if (collision.collider.name == "Jumper")
+        {
+            TakeDamage(10);
+        }
+
+        //loop for damage taken from a following enemy
+        if (collision.collider.name == "FollowingEnemy")
+        {
+            TakeDamage(10);
+        }
+
+        //loop for damage taken from a projectile
+        if (collision.collider.name == "Projectile")
+        {
+            TakeDamage(10);
+        }
+
+        if (collision.collider.name == "Jumper")
+        {
+            TakeDamage(10);
+        }
+
+        if (collision.collider.name == "Dropper")
+        {
+            TakeDamage(30);
+            Destroy(GameObject.FindWithTag("Dropper"));
+        }
+
+        if (collision.collider.name == "Patroller")
         {
             TakeDamage(10);
         }
