@@ -7,6 +7,7 @@ public class Dropper : MonoBehaviour
 {
     private Rigidbody2D rb;
     public float speed;
+    public Transform RespawnPoint;
 
 
     // Use this for initialization
@@ -19,7 +20,18 @@ public class Dropper : MonoBehaviour
         if (col.gameObject.name.Equals("Player")){
 
             rb.isKinematic = false;
+            
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col){
+        if(col.collider.name == "Player"){
+            Respawn();
+        }
+    }
+
+    public void Respawn(){
+        Instantiate(rb, RespawnPoint.position, RespawnPoint.rotation);
     }
 
 }
