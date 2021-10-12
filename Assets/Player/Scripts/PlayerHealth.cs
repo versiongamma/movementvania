@@ -12,6 +12,9 @@ public class PlayerHealth : MonoBehaviour
     public GameObject Player;
     public Rigidbody2D rb2D;
 
+    //Damage sfx
+    [SerializeField] private AudioSource damageSound;
+
     // Sets the users health to its max on start, same for health bar
     void Start()
     {
@@ -47,6 +50,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage) {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+        damageSound.Play();
     }
 
     // If the player collides with enemy calls damage function

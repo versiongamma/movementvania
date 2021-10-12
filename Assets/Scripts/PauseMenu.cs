@@ -6,21 +6,23 @@ public class PauseMenu : MonoBehaviour
 {
     //Class Variables
     [SerializeField] private GameObject pauseMenuUI;
-    [SerializeField] private bool gameIsPaused;
+    [SerializeField] private static bool gameIsPaused;
     [SerializeField] private AudioListener audioListener;
+    public bool externalPause = false;
 
     // Update is called once per frame
    private void Update(){
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7)) { // Might be different for other controllers, on my switch pro controller this is the '+' key, 'Home' key doesn't get detected so this is the second best option
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7) || externalPause) { // Might be different for other controllers, on my switch pro controller this is the '+' key, 'Home' key doesn't get detected so this is the second best option
             gameIsPaused = !gameIsPaused;
-
-            if (gameIsPaused) //loop to compare the bool game is paused
+            if (gameIsPaused || externalPause) //loop to compare the bool game is paused
             {
                 GamePaused(); 
             }
             else{
                 ResumeGame();
             }
+            if (externalPause)
+                externalPause = false;
         }
     }
 
@@ -41,7 +43,13 @@ public class PauseMenu : MonoBehaviour
 
     //setter
     public void setPaused(bool p) {
-        this.gameIsPaused = p;
+        gameIsPaused = p;
+    }
+    public bool getPaused() {
+        return gameIsPaused;
     }
 
+    public void setExternalPause(bool b) {
+        this.externalPause = b;
+    }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -51,6 +52,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource footstepSound;
+    [SerializeField] private AudioSource grappleShotSound;
+    [SerializeField] private AudioSource grappleHookSound;
     private System.Random randInt;
 
     [Header("Input")]
@@ -65,6 +68,8 @@ public class PlayerMovement : MonoBehaviour {
     public ArrayList rooms;
     public ArrayList minimapExploredList;
     static public Dictionary<string, string[]> minimapExplored;
+    public PauseMenu pm;
+    public bool showPauseMenu = false;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -83,9 +88,31 @@ public class PlayerMovement : MonoBehaviour {
             rooms.Add(temp);
             i++;
         }
+        pm = GameObject.FindObjectOfType(typeof(PauseMenu)) as PauseMenu;
+        bool check = false;
+        if (pm.getPaused()) {
+            check = true;
+        }
+        try {
+            if (System.IO.File.Exists(Application.persistentDataPath + "/TempSaveData.bin") && check) 
+            {
+                SaveLoad.loadData("TempSaveData");
+                // Ensure we delete the TempSaveData.bin file after loading
+                File.Delete(Application.persistentDataPath + "/TempSaveData.bin");
+                showPauseMenu = true;
+            }
+        } catch (Exception e) {
+            // Ignore the exception
+        }
     }
 
     void Update() {
+
+        if (showPauseMenu) 
+        {
+            pm.setExternalPause(true);
+            showPauseMenu = false;
+        }
 
         // Minimap fog of war checks \\
         for (int i = 0; i < rooms.Count; i++) {
@@ -105,7 +132,8 @@ public class PlayerMovement : MonoBehaviour {
                 newColour = tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color;
                 newColour.a = 255;
                 tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color = newColour;
-                minimapExploredList.Add(tempRoom.name);
+                if (!minimapExploredList.Contains(tempRoom.name))
+                    minimapExploredList.Add(tempRoom.name);
             }
         }
 
@@ -239,8 +267,6 @@ public class PlayerMovement : MonoBehaviour {
         verticalV = Mathf.Clamp(verticalV, -maxFallSpeed, float.MaxValue); // Clamp the vertical velocity, otherwise it will increase forever, and makes the player fall way too fast
         rb.velocity = new Vector3(horizontalV, verticalV, 0);
         anim.UpdateVelocity(inputController.getHorizontalAxis(), verticalV);
-
-
         // Save Loading \\
         if (SaveLoad.loaded)
         {
@@ -265,14 +291,23 @@ public class PlayerMovement : MonoBehaviour {
                 {
                     for (int k = 0; k <SaveLoad.minimapExplored.ElementAt(i).Value.Count(); k++) {
                         GameObject tempRoom = (GameObject) GameObject.Find(SaveLoad.minimapExplored.ElementAt(i).Value[k]);
-                        if (tempRoom)
-                            tempRoom.active = false;
+                        if (tempRoom) {
+                            Color newColour = tempRoom.GetComponent<SpriteRenderer>().color;
+                            newColour.a = 255;
+                            tempRoom.GetComponent<SpriteRenderer>().color = newColour;
+
+                            newColour = tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color;
+                            newColour.a = 255;
+                            tempRoom.GetComponentsInChildren<SpriteRenderer>()[1].color = newColour;
+                        }
                     }
                 }
             }
             minimapExplored = SaveLoad.minimapExplored;
             SaveLoad.clear();
             SaveLoad.loaded = false;
+            pm.setPaused(false);
+            pm.ResumeGame();
             
         }
         // Autosave checks
@@ -352,6 +387,7 @@ public class PlayerMovement : MonoBehaviour {
 
         hookRenderer.Attach(point);
         anim.PlayStartSwing(point);
+        grappleShotSound.Play();
 
         yield return new WaitForSeconds(.1f);
 
@@ -360,6 +396,10 @@ public class PlayerMovement : MonoBehaviour {
 
     // Takes a [point] and a swing [direction] and will force the player through an arc that connects there position to the point.
     IEnumerator SwingAroundPoint(Vector2 point, bool direction) {
+
+        //sfx
+        grappleHookSound.Play();
+        if (grappleShotSound.isPlaying) { grappleShotSound.Stop(); }
 
         swinging = true;
         Vector3 startPos = transform.position;

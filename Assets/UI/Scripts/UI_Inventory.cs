@@ -32,6 +32,13 @@ public class UI_Inventory : MonoBehaviour
         int y = 0;
         float powerupSlotCellSize = 5f;
 
+        if (PowerupSlotContainer == null || PowerupSlotTemplate == null || PowerupSlotTemplateText == null) 
+        {
+            PowerupSlotContainer = transform.Find("PowerupSlotContainer");
+            PowerupSlotTemplate = PowerupSlotContainer.Find("PowerupSlotTemplate");
+            PowerupSlotTemplateText = PowerupSlotTemplate.Find("Text");
+        }
+
         // Creates an instance of the template inventory component for each 
         foreach (string powerupName in inventory.GetPowerupList())
         {
