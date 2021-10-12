@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 // Handles the controlling of the player character, and any accosiated functions that
@@ -304,8 +306,18 @@ public class PlayerMovement : MonoBehaviour {
         if (SaveLoad.loaded)
         {
             Debug.Log("Moving player to loaded position!");
-            if (String.Compare(SceneManager.GetActiveScene().name, SaveLoad.activeSceneName) != 0)
+            if (String.Compare(SceneManager.GetActiveScene().name, SaveLoad.activeSceneName) != 0) {
+                GameObject fadeToBlackBox = GameObject.Find("Level_Transition");
+                SpriteRenderer re = fadeToBlackBox.GetComponent<SpriteRenderer>();
+                Color newColorFinal = re.color;
+                newColorFinal.a = 1;
+                newColorFinal.r = 0;
+                newColorFinal.g = 0;
+                newColorFinal.b = 0;
+                re.color = newColorFinal;
+                Canvas.ForceUpdateCanvases();
                 SceneManager.LoadScene(SaveLoad.activeSceneName, LoadSceneMode.Single);
+            }
 
             Physics2D.SyncTransforms();
             rb.position = new Vector2(SaveLoad.position[0], SaveLoad.position[1]);
@@ -484,6 +496,13 @@ public class PlayerMovement : MonoBehaviour {
                 r.color = newColor;
                 yield return new WaitForSeconds(.05f);
             }
+            SpriteRenderer re = fadeToBlackBox.GetComponent<SpriteRenderer>();
+            Color newColorFinal = re.color;
+            newColorFinal.a = 0;
+            newColorFinal.r = 0;
+            newColorFinal.g = 0;
+            newColorFinal.b = 0;
+            re.color = newColorFinal;
         }
     }
 
