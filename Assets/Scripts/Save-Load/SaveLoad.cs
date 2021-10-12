@@ -83,6 +83,46 @@ public static class SaveLoad
 
     }
 
+    public static void saveDataLevelChange(PlayerData pd) 
+    {
+        // Convert the given PlayerData object into a SaveData object for writing to disk
+        SaveData save = new SaveData();
+
+        save.health = pd.playerHealth;
+
+        save.powerups = pd.playerPowerups;
+
+        int arrayLength = 0;
+
+        for (int i = 0; i < pd.minimapExplored.Values.Count; i++) 
+        {
+            for (int k = 0; k < pd.minimapExplored.Values.ElementAt(i).Count(); k++) 
+            {
+                arrayLength++;
+            }
+        }
+
+        save.minimapExploredSceneName = pd.minimapExplored.Keys.ToArray<string>();
+        save.minimapExplored = new string[arrayLength];
+        save.minimapExploredIndex = new int[arrayLength];
+
+        for (int i = 0; i < pd.minimapExplored.Keys.Count; i++) 
+        {
+            for (int k = 0; k < pd.minimapExplored.Values.ElementAt(i).Count(); k++) 
+            {
+                save.minimapExploredIndex[k] = Array.IndexOf(save.minimapExploredSceneName, pd.minimapExplored.Keys.ElementAt(i));
+                save.minimapExplored[k] = pd.minimapExplored.Values.ElementAt(i)[k];
+            }
+        }
+
+        // Writes save data to the 'AppData' folder on Windows, not sure about MacOS
+        string savePath = Application.persistentDataPath + "/" + pd.saveFileName + ".bin";
+        // Convert SaveData object to JSON data for writing
+        string jsonData = JsonUtility.ToJson(save, true);
+        File.WriteAllText(savePath, jsonData);
+
+    }
+
     /*
      * Load data from a JSON file on disk and populate ourselves with said data
      */
@@ -110,6 +150,34 @@ public static class SaveLoad
 
         translateX = save.translateX;
         translateY = save.translateY;
+
+        health = save.health;
+
+        powerups = save.powerups;
+
+        minimapExplored = new Dictionary<string, string[]>();
+        for (int k = 0; k < save.minimapExploredSceneName.Count(); k++) 
+        {
+            int arrayLength = 0;
+            for (int i = 0; i < save.minimapExplored[k].Count(); i++) 
+            {
+                arrayLength++;
+            }
+            string[] tempArray = new string[arrayLength];
+            for (int i = 0; i < save.minimapExplored.Count(); i++) 
+            {
+                tempArray[i] = save.minimapExplored.ElementAt(i);
+            }
+            minimapExplored.Add(save.minimapExploredSceneName.ElementAt(k), tempArray);
+        }
+        loaded = true;
+    }
+
+    public static void loadDataLevelChange(String filename) 
+    {
+        clear();
+
+        SaveData save = JsonUtility.FromJson<SaveData>(File.ReadAllText(Application.persistentDataPath + "/" + filename + ".bin"));
 
         health = save.health;
 

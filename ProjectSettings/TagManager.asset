@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: [RightWall, LeftWall, Door, Movespots, Dropper, RightWall, LeftWall, Door]
+  tags:
+  - RightWall
+  - LeftWall
+  - Door
+  - Movespots
+  - Dropper
+  - RightWall
+  - LeftWall
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -17,7 +25,7 @@ TagManager:
   - Interactables
   - PostProcesing
   - Minimap
-  - 
+  - FadeToBlack
   - 
   - 
   - 

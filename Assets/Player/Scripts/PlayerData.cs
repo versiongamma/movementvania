@@ -21,10 +21,8 @@ public class PlayerData : MonoBehaviour
     /*
      * Retrives relevant data from different objects in order to populate ourselves with data to be saved
      */
-    public void popluateData(string fileName) {
+    public void popluateData(string fileName = "SaveData") {
         Debug.Log("Saving game...");
-        if (fileName == null)
-            fileName = "SaveData";
         this.saveFileName = fileName;
         GameObject player = GameObject.Find("Player");
         if (player == null)
@@ -51,6 +49,20 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    public void populateDataLevelChange(string levelName) 
+    {
+        GameObject player = GameObject.Find("Player");
+        if (player == null)
+            // Error here!
+            Debug.Log("Null pointer!!");
+        this.saveFileName = levelName;
+        this.playerHealth = player.GetComponent<PlayerHealth>().getPlayerHealth();
+        this.playerPowerups = player.GetComponent<PlayerEquipment>().getPowerUps();
+        this.minimapExplored = player.GetComponent<PlayerMovement>().getExploredRoomsWithSceneName();
+
+        SaveLoad.saveDataLevelChange(this);
+    }
+
     /*
      * Retrives loaded data from the SaveLoad class and populates ourselves with said data 
      */
@@ -74,5 +86,14 @@ public class PlayerData : MonoBehaviour
         PauseMenu pm = GameObject.FindObjectOfType(typeof(PauseMenu)) as PauseMenu;
         pm.setPaused(false);
         pm.ResumeGame();
+    }
+
+    public void loadPlayerDataLevelChange(string fileName) 
+    {
+        SaveLoad.loadDataLevelChange(fileName);
+
+        this.playerHealth = SaveLoad.health;
+        this.playerPowerups = SaveLoad.powerups;
+        this.minimapExplored = SaveLoad.minimapExplored;
     }
 }

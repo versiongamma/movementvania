@@ -48,6 +48,11 @@ public class PlayerHealth : MonoBehaviour
         return this.currentHealth;
     }
 
+    public void setPlayerHealth(int health) 
+    {
+        this.currentHealth = health;
+    }
+
     // Damages player and adjusts healthbar to suit
     public void TakeDamage(int damage) {
         currentHealth -= damage;
