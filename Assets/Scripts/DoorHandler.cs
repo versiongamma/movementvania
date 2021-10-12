@@ -26,6 +26,7 @@ public class DoorHandler : MonoBehaviour {
             player.GetComponent<PlayerMovement>().EndMovement();
             float playerTranslateX = doorSide == Side.Left ? -travelDistance : doorSide == Side.Right ? travelDistance : 0;
             player.transform.position += new Vector3(playerTranslateX, 0, 0);
+            boundsHandler.SetCameraBounds(mainCamera);
         }
     }
 }
