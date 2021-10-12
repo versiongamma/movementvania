@@ -10,6 +10,8 @@ public class PlayerHealth : MonoBehaviour
 
     public HealthBar healthBar;
     public GameObject Player;
+    public GameObject Dropper;
+    public Transform RespawnPoint;
 
     // Sets the users health to its max on start, same for health bar
     void Start()
@@ -69,6 +71,7 @@ public class PlayerHealth : MonoBehaviour
         if (collision.collider.name == "Dropper")
         {
             TakeDamage(30);
+            Destroy(GameObject.FindWithTag("Dropper"));
         }
 
         if (collision.collider.name == "Patroller")
