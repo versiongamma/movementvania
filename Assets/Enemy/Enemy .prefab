@@ -178,6 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 1.5
   speed: 2
+  sprite: {fileID: 0}
 --- !u!82 &2419164385097553992
 AudioSource:
   m_ObjectHideFlags: 0

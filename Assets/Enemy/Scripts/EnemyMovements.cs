@@ -17,6 +17,7 @@ public class EnemyMovements : MonoBehaviour
     private bool swinging;
     private bool colliding;
     private bool sliding;
+    private float maxFallSpeed = 20;
 
     [SerializeField] private GameObject sprite;
     private EnemyAnimationController anim;
@@ -46,16 +47,18 @@ public class EnemyMovements : MonoBehaviour
             airLauncing = false;
 
         } else {
-            grounded = false;
+            grounded = true;
         }
         
         anim.UpdateGroundedState(grounded);
 
+        Debug.Log("Rigib Body: " + rb);
+
         float horizontalV = rb.velocity.x;
         float verticalV = rb.velocity.y;
 
-        Debug.Log("horizontal: " + rb.velocity.x);
-        Debug.Log("vertical: " + rb.velocity.y);
+        Debug.Log("horizontal: " + horizontalV);
+        Debug.Log("vertical: " + verticalV);
 
         anim.UpdateVelocity(horizontalV, verticalV);
     }
