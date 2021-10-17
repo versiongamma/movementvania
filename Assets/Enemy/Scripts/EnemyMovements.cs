@@ -9,17 +9,55 @@ public class EnemyMovements : MonoBehaviour
     private Vector2 startPosition;
     private Rigidbody2D rb;
 
+    private bool grounded;
+    private bool usedDoubleJump;
+    private bool usedDash;
+    private bool airLauncing;
+    private bool keepAirLauncing;
+    private bool swinging;
+    private bool colliding;
+    private bool sliding;
+
+    [SerializeField] private GameObject sprite;
+    private EnemyAnimationController anim;
 
     private void Start(){
-
-        //enemy movements
+        //Enemy movements
         rb = GetComponent<Rigidbody2D>();
         direction = 1f;
         speed = 3f;
+
+        anim = sprite.GetComponent<EnemyAnimationController>();
     }
 
     // Update is called once per frame
     void Update(){
+
+        // GROUNDING
+        RaycastHit2D groundHitPos = Physics2D.Raycast(transform.position + new Vector3(.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
+        RaycastHit2D groundHitNeg = Physics2D.Raycast(transform.position + new Vector3(-.4f,0,0), -Vector2.up, 1, LayerMask.GetMask("Geometry"));
+        Debug.DrawRay(transform.position+ new Vector3(.4f,0,0), -Vector2.up, Color.red);
+        Debug.DrawRay(transform.position+ new Vector3(-.4f,0,0), -Vector2.up, Color.red);
+
+        if (groundHitPos.collider != null || groundHitNeg.collider != null) {
+            grounded = true;
+            usedDoubleJump = false;
+            usedDash = false;
+            airLauncing = false;
+
+        } else {
+            grounded = false;
+        }
+        
+        anim.UpdateGroundedState(grounded);
+
+        float horizontalV = rb.velocity.x;
+        float verticalV = rb.velocity.y;
+
+        Debug.Log("horizontal: " + rb.velocity.x);
+        Debug.Log("vertical: " + rb.velocity.y);
+
+        anim.UpdateVelocity(horizontalV, verticalV);
     }
 
     private void OnCollisionEnter2D(Collision2D collision){

@@ -189,7 +189,6 @@ public class PlayerMovement : MonoBehaviour {
         anim.UpdateGroundedState(grounded);
 
         // Basic Movement \\
-
         float horizontalV = rb.velocity.x;
         float verticalV = rb.velocity.y;
 
