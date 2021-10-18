@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour {
             SaveLoad.clear();
             SaveLoad.loaded = false;
             String name = Application.persistentDataPath + "/" + SceneManager.GetActiveScene().name + ".bin";
-            if (name.Contains("Level1")) 
+            if (name.Contains("Level1")) // Hardcoded values since this section will only be reached in 1 circumstance, meaning that the player/camera positions can be hardcoded
             {
                 rb.position = new Vector2(121.80f, -207.07f);
                 rb.transform.position = new Vector2(120.81f, -207.07f);
