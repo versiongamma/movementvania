@@ -7,7 +7,7 @@ public class PlayerAnimationController : MonoBehaviour {
     private Animator animator;
     private Vector2 swingTarget;
     private bool swinging;
-    private bool right;
+    public bool right;
 
     void Start() {
         animator = GetComponent<Animator>();

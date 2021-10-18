@@ -304,9 +304,9 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
-        if (hit.collider != null && !grounded && !sliding) {
+        if (hit.collider != null && !grounded && !sliding  && equip.GetPowerupState(PowerUps.Swing)) {
             hookIndicatorRenderer.Display(hit.point);
-            if (inputController.isSwingDown()  && equip.GetPowerupState(PowerUps.Swing)) { 
+            if (inputController.isSwingDown() ) { 
                 StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
             }
         } else hookIndicatorRenderer.Remove();

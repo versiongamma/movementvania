@@ -31,7 +31,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0;   //time scale set to zero to 'freeze' the game
         pauseMenuUI.SetActive(true); //pauseMenuUI become visible to the player
         AudioListener.pause = true;
-        AudioListener.pause = true;
     }
 
     //function for when the game is to be resumed from the pause menu
@@ -39,6 +38,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;  //Time is resumed
         pauseMenuUI.SetActive(false); //pauseMenuUI is made non visible
         AudioListener.pause = false;
+        setPaused(false);
     }
 
     //setter
