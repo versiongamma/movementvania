@@ -24,11 +24,12 @@ public class InputTests
     {
         yield return new WaitForFixedUpdate();
 
-        try
-        {
-            Assert.AreNotEqual(System.IO.File.Exists(Application.persistentDataPath + "/TempSaveData.bin"), true); // Ensure that TempSaveData doesn't exist
-        }
-        catch (Exception e)
-        {}
+        KeyCode initialKey = KeyCode.W;
+
+        PlayerPrefs.SetInt("upKey", (int)KeyCode.E);
+
+        KeyCode finalKey = (KeyCode)PlayerPrefs.GetInt("upKey", initialKey);
+
+        Assert.AreNotEqual(finalKey, initialKey);
     }
 }
