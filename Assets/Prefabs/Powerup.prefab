@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4072413675565255278}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.73, y: -5.82, z: 45.7784}
+  m_LocalPosition: {x: 0.58, y: -3.23, z: 45.7784}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7186483955516485039}
@@ -126,16 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 7186483955516485036}
   cam: {fileID: 0}
-  powerupNameUI: {fileID: 7186483954931985829}
-  actionUI: {fileID: 7186483954103971127}
-  keyUI: {fileID: 7186483954587803812}
-  resultUI: {fileID: 7186483954985527990}
-  keyImgUI: {fileID: 7211964899081599480}
-  powerupName: Double Jump
-  action: Press
-  result: in the air to jump again
   powerup: 0
-  key: 0
 --- !u!82 &3930506769871795013
 AudioSource:
   m_ObjectHideFlags: 0
@@ -232,6 +223,85 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &7132433446155297030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271969496734208471}
+  - component: {fileID: 4874171215059892742}
+  - component: {fileID: 8842423619016176838}
+  m_Layer: 9
+  m_Name: or
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &271969496734208471
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7132433446155297030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7186483955516485039}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 281, y: -10}
+  m_SizeDelta: {x: 275.08, y: 114.28}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4874171215059892742
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7132433446155297030}
+  m_CullTransparentMesh: 1
+--- !u!114 &8842423619016176838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7132433446155297030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 90
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 300
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: or
 --- !u!1 &7186483954036199653
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,7 +473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7186483954587803813
 RectTransform:
   m_ObjectHideFlags: 0
@@ -416,11 +486,11 @@ RectTransform:
   m_LocalScale: {x: 1.5684061, y: 1.5684061, z: 0.15684061}
   m_Children: []
   m_Father: {fileID: 7186483955516485039}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 132, y: -35}
+  m_AnchoredPosition: {x: 179, y: 99}
   m_SizeDelta: {x: 176.07, y: 58.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7186483954587803815
@@ -543,7 +613,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Name
+  m_Text: Double Jump
 --- !u!1 &7186483954985527988
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,11 +644,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7186483955516485039}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -16.86, y: -427.37}
+  m_AnchoredPosition: {x: -16.86, y: -477}
   m_SizeDelta: {x: 1047.7, y: 270.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7186483954985527985
@@ -622,7 +692,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: to perform an action
+  m_Text: once jumped to double jump
 --- !u!1 &7186483955516485036
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7186483955516485039
 RectTransform:
   m_ObjectHideFlags: 0
@@ -656,6 +726,7 @@ RectTransform:
   - {fileID: 7186483954036199652}
   - {fileID: 7186483954931985834}
   - {fileID: 7186483954103971124}
+  - {fileID: 271969496734208471}
   - {fileID: 7186483954587803813}
   - {fileID: 7211964899081599481}
   - {fileID: 7186483954985527991}
@@ -745,7 +816,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7211964899081599481
 RectTransform:
   m_ObjectHideFlags: 0
@@ -758,11 +829,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7186483955516485039}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 119, y: -32}
+  m_AnchoredPosition: {x: 180, y: -171}
   m_SizeDelta: {x: 419.01, y: 419.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7211964899081599483
