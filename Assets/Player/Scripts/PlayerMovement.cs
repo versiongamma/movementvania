@@ -146,6 +146,17 @@ public class PlayerMovement : MonoBehaviour {
             minimapExplored = SaveLoad.minimapExplored;
             SaveLoad.clear();
             SaveLoad.loaded = false;
+            String name = Application.persistentDataPath + "/" + SceneManager.GetActiveScene().name + ".bin";
+            if (name.Contains("Level1")) 
+            {
+                rb.position = new Vector2(121.80f, -207.07f);
+                rb.transform.position = new Vector2(120.81f, -207.07f);
+
+                Camera.main.transform.position = new Vector3(120.35215759277344f, -199.98431396484376f, -10.000005722045899f);
+
+                GameObject.Find("Main Camera").GetComponent<CameraMovement>().SetTranslation(false, false);
+                GameObject.Find("Main Camera").GetComponent<CameraMovement>().setCameraMinMax(120.35316467285156f, 120.32524108886719f, -199.98422241210938f, -199.98355102539063f);
+            }
 
             File.Delete(Application.persistentDataPath + "/" + SceneManager.GetActiveScene().name + ".bin");
         }
