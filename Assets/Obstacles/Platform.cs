@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Patroller : MonoBehaviour
+public class Platform : MonoBehaviour
 {
     //public variables for the movement of the patroller
     public float speed;
-    public float startWaitTime; 
+    public float startWaitTime;
     private float waitTime;
     private Rigidbody2D rb;
 
     //variables for storing the list of move spots
-    public List <Transform> MoveSpots;
+    public List<Transform> PlatformPoints;
     private int spotindex = 0;
 
 
@@ -23,9 +23,9 @@ public class Patroller : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        transform.position = Vector3.MoveTowards(transform.position, MoveSpots[spotindex].position, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, PlatformPoints[spotindex].position, speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, MoveSpots[spotindex].position) < 0.2f){
+        if (Vector3.Distance(transform.position, PlatformPoints[spotindex].position) < 0.2f){
             if (waitTime <= 0){
                 spotindex++;
                 waitTime = startWaitTime;
@@ -36,7 +36,7 @@ public class Patroller : MonoBehaviour
         }
 
         //keeps the enemy moving in a loop
-        int listSize = MoveSpots.Count;
+        int listSize = PlatformPoints.Count;
         if (spotindex == listSize){
             spotindex = 0;
         }

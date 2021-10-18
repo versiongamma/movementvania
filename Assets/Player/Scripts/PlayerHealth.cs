@@ -57,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage) {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
-        damageSound.Play();
+        //damageSound.Play();
     }
 
     // If the player collides with enemy calls damage function
@@ -69,48 +69,44 @@ public class PlayerHealth : MonoBehaviour
         }
 
         //loop for damage taken from a following enemy
-        if (collision.collider.name == "FollowingEnemy")
-        {
+        if (collision.collider.name == "FollowingEnemy"){
             TakeDamage(10);
         }
 
         //loop for damage taken from a projectile
-        if (collision.collider.name == "Projectile")
-        {
+        if (collision.collider.name == "Projectile"){
             TakeDamage(10);
         }
 
-        if (collision.collider.name == "Jumper")
-        {
+        if (collision.collider.name == "Jumper"){
             TakeDamage(10);
         }
 
         //loop for damage taken from a following enemy
-        if (collision.collider.name == "FollowingEnemy")
-        {
+        if (collision.collider.name == "FollowingEnemy"){
             TakeDamage(10);
         }
 
         //loop for damage taken from a projectile
-        if (collision.collider.name == "Projectile")
-        {
+        if (collision.collider.name == "Projectile"){
             TakeDamage(10);
         }
 
-        if (collision.collider.name == "Jumper")
-        {
+        if (collision.collider.name == "Jumper"){
             TakeDamage(10);
         }
 
-        if (collision.collider.name == "Dropper")
-        {
+        if (collision.collider.name == "Dropper"){
             TakeDamage(30);
             Destroy(GameObject.FindWithTag("Dropper"));
         }
 
-        if (collision.collider.name == "Patroller")
-        {
+        if (collision.collider.name == "Patroller"){
             TakeDamage(10);
+        }
+
+        if (collision.collider.name == "Spikes"){
+            TakeDamage(15);
         }
     }
 }
