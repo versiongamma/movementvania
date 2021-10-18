@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
@@ -69,47 +70,39 @@ public class PlayerHealth : MonoBehaviour
         }
 
         //loop for damage taken from a following enemy
-        if (collision.collider.name == "FollowingEnemy")
-        {
+        if (collision.collider.name == "FollowingEnemy"){
             TakeDamage(10);
         }
 
         //loop for damage taken from a projectile
-        if (collision.collider.name == "Projectile")
-        {
+        if (collision.collider.name == "Projectile"){
             TakeDamage(10);
         }
 
-        if (collision.collider.name == "Jumper")
-        {
+        if (collision.collider.name == "Jumper"){
             TakeDamage(10);
         }
 
         //loop for damage taken from a following enemy
-        if (collision.collider.name == "FollowingEnemy")
-        {
+        if (collision.collider.name == "FollowingEnemy"){
             TakeDamage(10);
         }
 
         //loop for damage taken from a projectile
-        if (collision.collider.name == "Projectile")
-        {
+        if (collision.collider.name == "Projectile"){
             TakeDamage(10);
         }
 
-        if (collision.collider.name == "Jumper")
-        {
+        if (collision.collider.name == "Jumper"){
             TakeDamage(10);
         }
 
-        if (collision.collider.name == "Dropper")
-        {
+        if (collision.collider.name == "Dropper"){
             TakeDamage(30);
             Destroy(GameObject.FindWithTag("Dropper"));
         }
 
-        if (collision.collider.name == "Patroller")
-        {
+        if (collision.collider.name == "Patroller"){
             TakeDamage(10);
         }
     }
