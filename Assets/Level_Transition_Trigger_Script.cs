@@ -38,6 +38,13 @@ public class Level_Transition_Trigger_Script : MonoBehaviour
                 r.color = newColor;
                 yield return new WaitForSeconds(.05f);
             }
+            SpriteRenderer re = fadeToBlackBox.GetComponent<SpriteRenderer>();
+            Color newColorFinal = re.color;
+            newColorFinal.a = 1;
+            newColorFinal.r = 0;
+            newColorFinal.g = 0;
+            newColorFinal.b = 0;
+            re.color = newColorFinal;
             loadLevel();
         }
     }
