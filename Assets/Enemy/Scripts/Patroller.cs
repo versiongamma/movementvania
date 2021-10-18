@@ -8,7 +8,6 @@ public class Patroller : MonoBehaviour
     public float speed;
     public float startWaitTime; 
     private float waitTime;
-    private int randomSpot;
     private Rigidbody2D rb;
 
     //variables for storing the list of move spots
