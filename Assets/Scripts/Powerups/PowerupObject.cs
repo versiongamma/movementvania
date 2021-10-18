@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 // Handles the powerup object in the level that the player picks up to aquire new powerups
 
@@ -15,11 +14,7 @@ public enum Key {
 public class PowerupObject : MonoBehaviour {
 
     [SerializeField] private GameObject canvas, cam;
-    [SerializeField] public Text powerupNameUI, actionUI, keyUI, resultUI;
-    [SerializeField] public Image keyImgUI;
-    [SerializeField] public string powerupName, action, result;  
     [SerializeField] private PowerUps powerup; 
-    [SerializeField] private Key key;
 
     private AudioSource sound;
 
@@ -54,11 +49,6 @@ public class PowerupObject : MonoBehaviour {
 
     IEnumerator ShowTooltip(GameObject canvas) {
             
-            powerupNameUI.text = powerupName;
-            actionUI.text = action;
-            DisplayKeyCode.Display(keyUI, keyImgUI, key);
-            resultUI.text = result;
-
             canvas.SetActive(true);
             StartCoroutine(Fade(canvas.GetComponentsInChildren<CanvasRenderer>(), .15f, true));
 
