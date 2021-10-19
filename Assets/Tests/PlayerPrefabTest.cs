@@ -13,8 +13,19 @@ public class PlayerPrefabTest
     public IEnumerator PlayerPrefabTestWithEnumeratorPasses()
     {
         // Check that the player exists in the scene
-        var playerInScene = GameObject.Find("Player");
+        var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player/Player.prefab");
+        bool playerPrefabFound = false;
 
+        if (playerPrefab != null) {
+            playerPrefabFound = true;
+            Debug.Log("Player Prefab Found");
+        }
+        else if (playerPrefab == null) {
+            playerPrefabFound = false;
+            Debug.Log("Player Prefab Not Found");
+        }
+
+        Assert.AreNotEqual(playerPrefabFound, false);
         yield return new WaitForSeconds(3f);
     }
 }
