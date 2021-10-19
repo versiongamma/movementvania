@@ -13,7 +13,13 @@ public class MusicSliderController : MonoBehaviour
     //Initialize with previously used sfx volume
     public void Start()
     {
-        slider.value = PlayerPrefs.GetFloat("MusicVolume");
+        if (PlayerPrefs.HasKey("MusicVolume")) {
+            slider.value = PlayerPrefs.GetFloat("MusicVolume");
+        } else {
+            PlayerPrefs.SetFloat("MusicVolume", 1);
+            slider.value = 1;
+        }
+        
     }
     //Function to translate slider value to volume for mixer group
     public void SetLevel(float SliderValue)

@@ -12,6 +12,7 @@ TagManager:
   - RightWall
   - LeftWall
   - Door
+  - SavedIcon
   layers:
   - Default
   - TransparentFX

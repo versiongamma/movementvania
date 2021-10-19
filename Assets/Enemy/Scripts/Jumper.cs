@@ -8,14 +8,13 @@ public class Jumper : MonoBehaviour
     public float speed;
     public float jumpHeight = 20f;
     private bool isGrounded = true;
+    public bool inPlace = true;
     private Vector2 startPosition;
     private Rigidbody2D rb;
 
 
     private void Start(){
         rb = GetComponent<Rigidbody2D>();
-        direction = -1f;
-        speed = 3f;
     }
 
     // Update is called once per frame
@@ -31,7 +30,10 @@ public class Jumper : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 8){
-            direction *= -1f;
+            if (inPlace) { direction *= -1f; }
+            else if (collision.gameObject.name == "Left Wall" || collision.gameObject.name == "Right Wall") {
+                direction *= -1f;
+            }
             isGrounded = true;
         }
 

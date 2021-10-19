@@ -40,14 +40,15 @@ public class PlayerMovement : MonoBehaviour {
     // States can be used to determine what the player is currently doing,
     // i.e. if they are on the ground, if they are currently swinging, 
     // as functionality might change based on the player's current state
-    private bool grounded;
-    private bool usedDoubleJump;
-    private bool usedDash;
-    private bool airLauncing;
-    private bool keepAirLauncing;
-    private bool swinging;
-    private bool colliding;
-    private bool sliding;
+    [Header("States")]
+    public bool grounded;
+    public bool usedDoubleJump;
+    public bool usedDash;
+    public bool airLauncing;
+    public bool keepAirLauncing;
+    public bool swinging;
+    public bool colliding;
+    public bool sliding;
 
     [Header("Sound Effects")]
     //Sound effect handling
@@ -279,7 +280,7 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit2D onWallRight = Physics2D.Raycast(transform.position, Vector2.right, .6f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, -Vector2.right * .6f, Color.blue);
         Debug.DrawRay(transform.position, Vector2.right * .6f, Color.blue);
-        if (onWallLeft.collider != null || onWallRight.collider != null) {
+        if ((onWallLeft.collider != null || onWallRight.collider != null) && !grounded) {
 
             if (verticalV < 0 && Mathf.Abs(inputController.getHorizontalAxis()) > 0 && equip.GetPowerupState(PowerUps.WallJump)) {
                 verticalV = Mathf.Clamp(verticalV, -maxFallSpeed / 5, 0);
@@ -303,9 +304,9 @@ public class PlayerMovement : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, swingDirection, 14.14f, LayerMask.GetMask("Geometry"));
         Debug.DrawRay(transform.position, swingDirection * 20, Color.green);
 
-        if (hit.collider != null && !grounded && !sliding) {
+        if (hit.collider != null && !grounded && !sliding  && equip.GetPowerupState(PowerUps.Swing)) {
             hookIndicatorRenderer.Display(hit.point);
-            if (inputController.isSwingDown()  && equip.GetPowerupState(PowerUps.Swing)) { 
+            if (inputController.isSwingDown() ) { 
                 StartCoroutine(StartSwing(hit.point, swingDirection.x > 0));
             }
         } else hookIndicatorRenderer.Remove();
