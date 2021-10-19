@@ -28,7 +28,7 @@ public class InputTests
 
         PlayerPrefs.SetInt("upKey", (int)KeyCode.E);
 
-        KeyCode finalKey = (KeyCode)PlayerPrefs.GetInt("upKey", initialKey);
+        KeyCode finalKey = (KeyCode)PlayerPrefs.GetInt("upKey", (int)initialKey);
 
         Assert.AreNotEqual(finalKey, initialKey);
     }
