@@ -45,7 +45,7 @@ public class InputController : MonoBehaviour
         else
         {
             jump = (KeyCode) PlayerPrefs.GetInt("jumpKey", (int)KeyCode.Space);
-            dash = (KeyCode) PlayerPrefs.GetInt("dashKey", (int)KeyCode.Z);
+            dash = (KeyCode) PlayerPrefs.GetInt("dashKey", (int)KeyCode.LeftAlt);
             swing = (KeyCode) PlayerPrefs.GetInt("swingKey", (int)KeyCode.LeftShift);
             left = (KeyCode) PlayerPrefs.GetInt("leftKey", (int)KeyCode.A);
             right = (KeyCode) PlayerPrefs.GetInt("rightKey", (int)KeyCode.D);
@@ -78,6 +78,10 @@ public class InputController : MonoBehaviour
     public void updateInventoryBind(KeyCode b)
     {
         inventory = b;
+    }
+    public void updateSwingBind(KeyCode b)
+    {
+        swing = b;
     }
     public void setShouldUpdateKeyBindings(bool b) 
     {

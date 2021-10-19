@@ -47,6 +47,9 @@ public class updateKeyBind : MonoBehaviour
             case 5:
                 keyString = "inventoryKey";
                 break;
+            case 6:
+                keyString = "swingKey";
+                break;
             default:
                 // Error here!
                 return;
@@ -75,6 +78,9 @@ public class updateKeyBind : MonoBehaviour
                     break;
                 case 5:
                     inputController.updateInventoryBind((KeyCode)key);
+                    break;
+                case 6:
+                    inputController.updateSwingBind((KeyCode)key);
                     break;
                 default:
                     // Error here!

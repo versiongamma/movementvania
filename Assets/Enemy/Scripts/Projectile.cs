@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed;
+    public float speed = 10;
 
     private Transform target;
 
@@ -19,10 +19,10 @@ public class Projectile : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision){
-        if (collision.collider.name == "Player") //if a projectile comes in contact with a player with will be destroyed
-        {
+        if (collision.gameObject.name != "Shooter") {
             DestroyProjectile();
         }
+        
     }
 
     //Method to destory the projectile
