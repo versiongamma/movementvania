@@ -11,6 +11,7 @@ public class PlayerHealth : MonoBehaviour
 
     public HealthBar healthBar;
     public GameObject Player;
+    [SerializeField] private PlayerAnimationController animContr;
     public Rigidbody2D rb2D;
     public GameObject Dropper;
     public Transform RespawnPoint;
@@ -35,13 +36,10 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void Knockback(Collision2D obj)
+    public void Knockback()
     {
-        Debug.Log(obj.transform.position.y);
-        Debug.Log(this.transform.position.y);
-
-        Vector2 direction = (obj.transform.position - this.transform.position).normalized;
-        rb2D.AddForce(-direction * 50, ForceMode2D.Impulse);
+        GetComponent<PlayerMovement>().EndMovement();
+        rb2D.AddForce(new Vector2((animContr.right ? -1 : 1) * 100, 0), ForceMode2D.Impulse);
     }
 
     public int getPlayerHealth() 
@@ -63,51 +61,99 @@ public class PlayerHealth : MonoBehaviour
 
     // If the player collides with enemy calls damage function
     private void OnCollisionEnter2D(Collision2D collision) {
-        //loop for damage taken from a basic enemy
-        if(collision.collider.name == "Enemy") {
-            TakeDamage(5);
-            Knockback(collision);
-        }
 
         //loop for damage taken from a following enemy
         if (collision.collider.name == "FollowingEnemy"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         //loop for damage taken from a projectile
         if (collision.collider.name == "Projectile"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         if (collision.collider.name == "Jumper"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         //loop for damage taken from a following enemy
         if (collision.collider.name == "FollowingEnemy"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         //loop for damage taken from a projectile
         if (collision.collider.name == "Projectile"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         if (collision.collider.name == "Jumper"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         if (collision.collider.name == "Dropper"){
-            TakeDamage(30);
+            TakeDamage(2);
+            Knockback();
             Destroy(GameObject.FindWithTag("Dropper"));
         }
 
         if (collision.collider.name == "Patroller"){
-            TakeDamage(10);
+            TakeDamage(2);
+            Knockback();
         }
 
         if (collision.collider.name == "Spikes"){
-            TakeDamage(15);
+            TakeDamage(2);
+            Knockback();
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+
+        //loop for damage taken from a following enemy
+        if (collision.collider.name == "FollowingEnemy"){
+            Knockback();
+        }
+
+        //loop for damage taken from a projectile
+        if (collision.collider.name == "Projectile"){
+            Knockback();
+        }
+
+        if (collision.collider.name == "Jumper"){
+            Knockback();
+        }
+
+        //loop for damage taken from a following enemy
+        if (collision.collider.name == "FollowingEnemy"){
+            Knockback();
+        }
+
+        //loop for damage taken from a projectile
+        if (collision.collider.name == "Projectile"){
+            Knockback();
+        }
+
+        if (collision.collider.name == "Jumper"){
+            Knockback();
+        }
+
+        if (collision.collider.name == "Dropper"){
+            Knockback();
+            Destroy(GameObject.FindWithTag("Dropper"));
+        }
+
+        if (collision.collider.name == "Patroller"){
+            Knockback();
+        }
+
+        if (collision.collider.name == "Spikes"){
+            Knockback();
         }
     }
 }
